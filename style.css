@@ -18,7 +18,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: "Courier Prime", "Courier New", Courier, monospace;
-  font-size: 14pt;
+  font-size: 11pt;
   line-height: 1.6;
 }
 
@@ -63,6 +63,11 @@ ul.plain li { margin-bottom: 14px; }
 .home img { width: min(720px, 100%); height: auto; display: block; filter: drop-shadow(0 22px 18px rgba(0,0,0,0.22)); }
 .home p { margin-top: 40px; }
 
+/* ---------- research themes: picture on the left, text on the right ---------- */
+.theme { display: grid; grid-template-columns: 180px 1fr; gap: 28px; align-items: start; margin-bottom: 48px; }
+.theme img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; display: block; background: #f2f2f2; }
+.theme h2 { margin-top: 0; }
+
 /* ---------- people ---------- */
 .people {
   display: grid;
@@ -80,4 +85,6 @@ ul.plain li { margin-bottom: 14px; }
   header { padding: 16px; gap: 6px 18px; }
   header nav { gap: 4px 18px; }
   main { padding: 36px 16px 56px; }
+  .theme { grid-template-columns: 1fr; gap: 14px; }
+  .theme img { width: 160px; }
 }
