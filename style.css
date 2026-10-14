@@ -60,8 +60,8 @@ ul.plain li { margin-bottom: 14px; }
   padding: 24px 24px 80px;
   text-align: center;
 }
-.home img { width: min(720px, 100%); height: auto; display: block; }
-.home p { margin-top: 22px; }
+.home img { width: min(720px, 100%); height: auto; display: block; filter: drop-shadow(0 22px 18px rgba(0,0,0,0.22)); }
+.home p { margin-top: 40px; }
 
 /* ---------- people ---------- */
 .people {
