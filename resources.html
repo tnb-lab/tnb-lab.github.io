@@ -9,6 +9,52 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+
+  <!-- Extra look used only by this page. You normally never need to edit it. -->
+  <style>
+    .areas {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+    .area {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px;
+      border: 1px solid var(--text);
+      background: var(--bg);
+      color: var(--text);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+    .area:hover { background: #f4f4f4; }
+    .area.selected, .area.selected:hover, .area.selected:focus { background: #dcdcdc; }
+    .pic { width: 72px; height: 72px; align-self: center; margin: auto 0; display: flex; align-items: center; justify-content: center; }
+    .pic img { max-width: 100%; max-height: 100%; display: block; }
+    .pic:empty { border: 1px dashed #bbb; }
+    .area .num, .area .label { font-size: 9pt; line-height: 1.35; }
+    .area .label { min-height: 4.1em; display: flex; align-items: flex-end; }
+
+    .hint { color: var(--dim); }
+    #members-note { display: none; margin: 0 0 18px; }
+    #res-list li { display: none; }
+    #res-list li.show { display: list-item; }
+    #res-list a { text-decoration: underline; }
+    #res-list .d { display: block; color: var(--dim); font-size: 9pt; }
+
+    @media (max-width: 700px) {
+      .areas { grid-template-columns: 1fr; gap: 10px; }
+      .area { aspect-ratio: auto; flex-direction: row; justify-content: flex-start; align-items: center; gap: 14px; }
+      .area .label { min-height: 0; }
+      .pic { margin: 0; }
+      .pic { width: 44px; height: 44px; flex: none; order: -1; }
+      .area .num { display: none; }
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +73,171 @@
   </header>
 
   <main>
-    <h1>Resou<span class="flip">r</span>ces</h1>
-    <!-- ✏️ EDIT: protocols, datasets, code, cell lines... one per line, copy a whole <li> ... </li> line to add more. -->
-    <ul class="plain">
-      <li>Mouse (and rat) brain atlas — The mouse brain in stereotaxic coordinates: hard cover edition. 2001. <a href="#"><u>https://labs.gaidi.ca/mouse-brain-atlas/</u></a></li>
+    <h1>Resources</h1>
+
+    <!-- ===== THE FOUR SQUARES =====
+         ✏️ You can change the text of a square between <span class="label"> and </span>.
+         ✏️ PICTURES: upload a square image (PNG with transparent background works best,
+            about 300 × 300 pixels) into the "images" folder, named res1.png, res2.png,
+            res3.png and res4.png. Until a picture is uploaded, an empty dotted frame is shown.
+            For a different file type (e.g. .jpg or .svg), change the name after images/ too.
+         Do NOT change data-area="..." : it links each square to its list. -->
+    <div class="areas">
+
+      <button class="area" data-area="protocols">
+        <span class="num">01</span>
+        <!-- ✏️ PICTURE: upload your image into the "images" folder named res1.png -->
+        <span class="pic"><img src="images/res1.png" alt="" onerror="this.remove()"></span>
+        <span class="label">Lab protocols and resources</span>
+      </button>
+
+      <button class="area" data-area="atlases">
+        <span class="num">02</span>
+        <!-- ✏️ PICTURE: upload your image into the "images" folder named res2.png -->
+        <span class="pic"><img src="images/res2.png" alt="" onerror="this.remove()"></span>
+        <span class="label">Atlases and databases</span>
+      </button>
+
+      <button class="area" data-area="tools">
+        <span class="num">03</span>
+        <!-- ✏️ PICTURE: upload your image into the "images" folder named res3.png -->
+        <span class="pic"><img src="images/res3.png" alt="" onerror="this.remove()"></span>
+        <span class="label">Useful tools</span>
+      </button>
+
+      <button class="area" data-area="openscience">
+        <span class="num">04</span>
+        <!-- ✏️ PICTURE: upload your image into the "images" folder named res4.png -->
+        <span class="pic"><img src="images/res4.png" alt="" onerror="this.remove()"></span>
+        <span class="label">Open Science</span>
+      </button>
+
+    </div>
+
+    <p class="hint" id="hint">Select a square to see its resources.</p>
+
+    <!-- Shown only for the "Lab protocols and resources" square -->
+    <p class="dim" id="members-note">Members and invited collaborators only: the links open our shared OneDrive and require sign-in with an authorized email. To request access, write to <a href="mailto:YOUR-LAB-EMAIL"><u>YOUR-LAB-EMAIL</u></a>.</p>
+
+    <!-- ===== THE RESOURCES =====
+         ✏️ HOW TO ADD A RESOURCE:
+           1. Copy one whole item from <li ...> to </li>.
+           2. Paste it in the list below, inside the right group.
+           3. Change the title, the link (href="...") and the short description.
+           4. In data-area="..." write which square it belongs to:
+                protocols    = Lab protocols and resources
+                atlases      = Atlases and databases
+                tools        = Useful tools
+                openscience  = Open Science
+         ✏️ HOW TO REMOVE A RESOURCE: delete its whole item from <li ...> to </li>.
+         ✏️ ONEDRIVE: for each protocols item, replace PASTE-ONEDRIVE-LINK-HERE with the
+            OneDrive link (shared with "Specific people", not "Anyone with the link"). -->
+    <ul class="plain" id="res-list">
+
+      <!-- ===== 01 · LAB PROTOCOLS AND RESOURCES (members only) ===== -->
+      <li data-area="protocols"><a href="PASTE-ONEDRIVE-LINK-HERE">Protocols folder</a> <span class="dim">(members)</span>
+        <span class="d">Step-by-step lab protocols.</span></li>
+      <li data-area="protocols"><a href="PASTE-ONEDRIVE-LINK-HERE">Reagent and antibody inventory</a> <span class="dim">(members)</span>
+        <span class="d">Current stock, lot numbers and storage locations.</span></li>
+      <li data-area="protocols"><a href="PASTE-ONEDRIVE-LINK-HERE">Cell line inventory</a> <span class="dim">(members)</span>
+        <span class="d">iPSC lines, differentiation batches and freezer map.</span></li>
+      <li data-area="protocols"><a href="PASTE-ONEDRIVE-LINK-HERE">Equipment booking and SOPs</a> <span class="dim">(members)</span>
+        <span class="d">Instrument schedules and standard operating procedures.</span></li>
+      <li data-area="protocols"><a href="PASTE-ONEDRIVE-LINK-HERE">Templates and forms</a> <span class="dim">(members)</span>
+        <span class="d">Lab notebook templates, ordering forms, onboarding checklist.</span></li>
+
+      <!-- ===== 02 · ATLASES AND DATABASES ===== -->
+      <li data-area="atlases"><a href="https://portal.brain-map.org/">Allen Brain Map</a>
+        <span class="d">Human and mouse brain atlases, including single-cell and spatial transcriptomics.</span></li>
+      <li data-area="atlases"><a href="https://www.proteinatlas.org/">Human Protein Atlas</a>
+        <span class="d">Protein and RNA expression across human tissues, cells and brain regions.</span></li>
+      <li data-area="atlases"><a href="https://www.gtexportal.org/">GTEx Portal</a>
+        <span class="d">Gene expression and regulation across human tissues.</span></li>
+      <li data-area="atlases"><a href="https://brainrnaseq.org/">Brain RNA-Seq</a>
+        <span class="d">Cell-type-specific gene expression in mouse and human brain.</span></li>
+      <li data-area="atlases"><a href="https://adni.loni.usc.edu/">ADNI</a>
+        <span class="d">Alzheimer's Disease Neuroimaging Initiative: imaging, biomarker and clinical data.</span></li>
+      <li data-area="atlases"><a href="https://www.alzforum.org/mutations">Alzforum Mutations Database</a>
+        <span class="d">Curated variants linked to Alzheimer's disease and other neurodegenerative disorders.</span></li>
+      <li data-area="atlases"><a href="https://hpscreg.eu/">hPSCreg</a>
+        <span class="d">European registry of human pluripotent stem cell lines.</span></li>
+      <li data-area="atlases"><a href="https://www.cellosaurus.org/">Cellosaurus</a>
+        <span class="d">Knowledge resource on cell lines, useful for identification and authentication.</span></li>
+      <li data-area="atlases"><a href="https://www.uniprot.org/">UniProt</a>
+        <span class="d">Protein sequences and functional annotation.</span></li>
+      <li data-area="atlases"><a href="https://string-db.org/">STRING</a>
+        <span class="d">Protein–protein interaction networks.</span></li>
+
+      <!-- ===== 03 · USEFUL TOOLS ===== -->
+      <li data-area="tools"><a href="https://imagej.net/software/fiji/">Fiji (ImageJ)</a>
+        <span class="d">Open-source platform for microscopy image analysis.</span></li>
+      <li data-area="tools"><a href="https://cellpose.org/">Cellpose</a>
+        <span class="d">Deep-learning cell segmentation for microscopy images.</span></li>
+      <li data-area="tools"><a href="https://cellprofiler.org/">CellProfiler</a>
+        <span class="d">Automated, reproducible quantification of cell images.</span></li>
+      <li data-area="tools"><a href="https://www.r-project.org/">R Project</a>
+        <span class="d">Statistical computing and graphics.</span></li>
+      <li data-area="tools"><a href="https://maayanlab.cloud/Enrichr/">Enrichr</a>
+        <span class="d">Gene-set enrichment analysis.</span></li>
+      <li data-area="tools"><a href="https://www.ncbi.nlm.nih.gov/tools/primer-blast/">Primer-BLAST</a>
+        <span class="d">Design and check PCR primers.</span></li>
+      <li data-area="tools"><a href="https://www.addgene.org/">Addgene</a>
+        <span class="d">Plasmid repository and cloning resources.</span></li>
+      <li data-area="tools"><a href="https://www.zotero.org/">Zotero</a>
+        <span class="d">Free reference manager.</span></li>
+      <li data-area="tools"><a href="https://www.biorender.com/">BioRender</a>
+        <span class="d">Scientific illustration and figure design.</span></li>
+
+      <!-- ===== 04 · OPEN SCIENCE ===== -->
+      <li data-area="openscience"><a href="https://osf.io/">Open Science Framework (OSF)</a>
+        <span class="d">Project management, preregistration and data sharing.</span></li>
+      <li data-area="openscience"><a href="https://zenodo.org/">Zenodo</a>
+        <span class="d">Repository for datasets, code and supplementary material, with DOIs.</span></li>
+      <li data-area="openscience"><a href="https://www.biorxiv.org/">bioRxiv</a>
+        <span class="d">Preprint server for biology.</span></li>
+      <li data-area="openscience"><a href="https://www.protocols.io/">protocols.io</a>
+        <span class="d">Open, citable and versioned protocols.</span></li>
+      <li data-area="openscience"><a href="https://www.go-fair.org/fair-principles/">FAIR principles</a>
+        <span class="d">Making data findable, accessible, interoperable and reusable.</span></li>
+      <li data-area="openscience"><a href="https://arriveguidelines.org/">ARRIVE guidelines</a>
+        <span class="d">Reporting standards for animal research.</span></li>
+      <li data-area="openscience"><a href="https://nc3rs.org.uk/">NC3Rs</a>
+        <span class="d">Replacement, reduction and refinement in animal research.</span></li>
+      <li data-area="openscience"><a href="https://sfdora.org/">DORA</a>
+        <span class="d">Declaration on Research Assessment: evaluating research on its merits.</span></li>
+      <li data-area="openscience"><a href="https://v2.sherpa.ac.uk/romeo/">Sherpa Romeo</a>
+        <span class="d">Journal open-access and self-archiving policies.</span></li>
+
     </ul>
+
   </main>
 
+  <!-- Makes the squares work. You never need to edit this. -->
+  <script>
+    var squares = document.querySelectorAll(".area");
+    var items = document.querySelectorAll("#res-list li");
+    var hint = document.getElementById("hint");
+    var note = document.getElementById("members-note");
+
+    squares.forEach(function (sq) {
+      sq.addEventListener("click", function () {
+        var area = sq.getAttribute("data-area");
+        squares.forEach(function (s) { s.classList.toggle("selected", s === sq); });
+        var count = 0;
+        items.forEach(function (p) {
+          var match = p.getAttribute("data-area").split(" ").indexOf(area) !== -1;
+          p.classList.toggle("show", match);
+          if (match) count++;
+        });
+        note.style.display = area === "protocols" ? "block" : "none";
+        hint.style.display = count ? "none" : "block";
+        if (!count) hint.textContent = "No resources listed yet in this section.";
+      });
+    });
+
+    // Direct links such as resources.html#atlases open that square
+    var wanted = location.hash.slice(1);
+    squares.forEach(function (s) { if (s.getAttribute("data-area") === wanted) s.click(); });
+  </script>
 </body>
 </html>
