@@ -2,16 +2,15 @@
 title: TNBL
 description: Translational Neurobiology Lab (TNBL), Università G. d'Annunzio Chieti-Pescara.
 
-# Each post gets its own address, e.g. /news/2026/welcome/
-permalink: /news/:year/:title/
-
-# Every post uses the "post" page layout automatically
+# Every post uses the "post" page layout automatically,
+# and gets its own address, e.g. /news/2026/welcome/
 defaults:
   - scope:
       path: ""
       type: posts
     values:
       layout: post
+      permalink: /news/:year/:title/
 
 # Files that should not be published on the website
 exclude:
