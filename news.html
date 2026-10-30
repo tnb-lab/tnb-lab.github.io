@@ -1,3 +1,6 @@
+---
+title: News & views
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,34 +11,49 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
 </head>
 <body>
 
   <!-- ===== MENU (the same on every page) ===== -->
   <header>
-    <a class="logo" href="index.html" aria-label="TNBL, home">TN<span class="flip">B</span>L</a>
+    <a class="logo" href="{{ '/index.html' | relative_url }}" aria-label="TNBL, home">TN<span class="flip">B</span>L</a>
     <nav>
-      <a href="research.html">Research</a>
-      <a href="people.html">People</a>
-      <a href="publications.html">Publications</a>
-      <a href="news.html" class="active">News &amp; views</a>
-      <a href="resources.html">Resources</a>
-      <a href="lab-tour.html">Lab tour</a>
-      <a href="contacts.html">Contacts</a>
+      <a href="{{ '/research.html' | relative_url }}">Research</a>
+      <a href="{{ '/people.html' | relative_url }}">People</a>
+      <a href="{{ '/publications.html' | relative_url }}">Publications</a>
+      <a href="{{ '/news.html' | relative_url }}" class="active">News &amp; views</a>
+      <a href="{{ '/resources.html' | relative_url }}">Resources</a>
+      <a href="{{ '/lab-tour.html' | relative_url }}">Lab tour</a>
+      <a href="{{ '/contacts.html' | relative_url }}">Contacts</a>
     </nav>
   </header>
 
   <main>
-    <h1>N<span class="flip">e</span>ws &amp; vi<span class="flip">e</span>ws</h1>
-    <!-- ✏️ HOW TO ADD AN ITEM: copy one whole <li> ... </li> block, paste it at the TOP of the list, change date, headline and text. -->
-    <ul class="plain">
-      <li>
-        <span class="dim">[Date]</span><br>
-        <strong>[Headline]</strong><br>
-        [One or two lines]
-      </li>
-    </ul>
+    <h1>Ne<span class="flip">w</span>s &amp; views</h1>
+
+    <!-- ✏️ Nothing to edit here. Posts are added from the Pages CMS editor (app.pagescms.org)
+         and appear below automatically: newest first, grouped by year. -->
+
+    {% assign years = site.posts | group_by_exp: "post", "post.date | date: '%Y'" %}
+    {% for year in years %}
+      <section class="news-year">
+        <h2>{{ year.name }}</h2>
+        <div class="news-board">
+          {% for post in year.items %}
+            <a class="news-box" href="{{ post.url | relative_url }}">
+              {% if post.image %}
+                <span class="news-box-img" style="background-image: url('{{ post.image | relative_url }}');"></span>
+              {% endif %}
+              <span class="news-box-date">{{ post.date | date: "%-d %B %Y" }}</span>
+              <span class="news-box-title">{{ post.title }}</span>
+            </a>
+          {% endfor %}
+        </div>
+      </section>
+    {% else %}
+      <p>No news yet.</p>
+    {% endfor %}
   </main>
 
 </body>

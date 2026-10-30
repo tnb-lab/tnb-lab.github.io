@@ -1,0 +1,19 @@
+# Site settings read by GitHub Pages. You don't need to touch this file.
+title: TNBL
+description: Translational Neurobiology Lab (TNBL), Università G. d'Annunzio Chieti-Pescara.
+
+# Each post gets its own address, e.g. /news/2026/welcome/
+permalink: /news/:year/:title/
+
+# Every post uses the "post" page layout automatically
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+# Files that should not be published on the website
+exclude:
+  - .pages.yml
+  - README.md
