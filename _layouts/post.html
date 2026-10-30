@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }} · TNBL</title>
+  <meta name="description" content="Translational Neurobiology Lab (TNBL), Università G. d'Annunzio Chieti-Pescara.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
+</head>
+<body>
+
+  <!-- ===== MENU (the same on every page) ===== -->
+  <header>
+    <a class="logo" href="{{ '/index.html' | relative_url }}" aria-label="TNBL, home">TN<span class="flip">B</span>L</a>
+    <nav>
+      <a href="{{ '/research.html' | relative_url }}">Research</a>
+      <a href="{{ '/people.html' | relative_url }}">People</a>
+      <a href="{{ '/publications.html' | relative_url }}">Publications</a>
+      <a href="{{ '/news.html' | relative_url }}" class="active">News &amp; views</a>
+      <a href="{{ '/resources.html' | relative_url }}">Resources</a>
+      <a href="{{ '/lab-tour.html' | relative_url }}">Lab tour</a>
+      <a href="{{ '/contacts.html' | relative_url }}">Contacts</a>
+    </nav>
+  </header>
+
+  <main>
+    <article class="news-post">
+      <a class="news-back" href="{{ '/news.html' | relative_url }}">← News &amp; views</a>
+      <p class="news-post-date">{{ page.date | date: "%-d %B %Y" }}</p>
+      <h1>{{ page.title }}</h1>
+      {% if page.image %}
+        <img class="news-post-img" src="{{ page.image | relative_url }}" alt="">
+      {% endif %}
+      <div class="news-post-body">
+        {{ content }}
+      </div>
+    </article>
+  </main>
+
+</body>
+</html>
