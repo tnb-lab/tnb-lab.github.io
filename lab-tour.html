@@ -228,17 +228,41 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
 
 const FLOORS = [
   { id:"L3",  label:"Level 3",  sub:"Labs and shared facilities",     level:3,  plan:true  },
-  { id:"L0",  label:"Level 0",  sub:"PI office",                      level:0,  plan:false },
+  { id:"L0",  label:"Level 0",  sub:"Alberto office",                      level:0,  plan:false },
   { id:"Lm1", label:"Level −1", sub:"Vivarium and shared facilities", level:-1, plan:false }
 ];
 
 const ROOMS = [
 
   /* ---------------- Level 3 ---------------- */
-  { id:"culture", floor:"L3", kind:"own",
+   { id:"neurolab", floor:"L3", kind:"own",
+    name:"Imaging lab", tag:"Live cell imaging",
+    box:[1105,805,50,105],
+    text:"Live-cell experiments with fluorescent probes.",
+    equipment:[
+      ["Inverted fluorescence microscope", ""],
+      ["Inverted fluorescence microscope", ""]
+      ["Custom made perfusion system", ""],
+      ["Plate reader", "SpectraMax 190"]
+    ],
+    photos:[] },
+
+    { id:"cell biology", floor:"L3", kind:"own",
+    name:"Molecular biology lab", tag:"Protein, DNA, RNA",
+    box:[1050,805,55,105],
+    text:"Bench space for nucleic acid and protein work: extraction, quantification, PCR and western blotting.",
+    equipment:[
+      ["Thermal cycler", ""],
+      ["Electrophoresis and blotting units", ""],
+      ["Refrigerated microcentrifuge", "+4 °C"]
+      ["Chemical hood"]
+    ],
+    photos:[] },
+
+     { id:"culture", floor:"L3", kind:"own",
     name:"Cell culture room", tag:"iPSC & microglia",
     box:[1000,805,50,105],
-    text:"Human iPSCs are maintained here and differentiated into microglia, under sterile conditions at biosafety level 2.",
+    text:"Human iPSCs are maintained here BSL2.",
     equipment:[
       ["Class II biological safety cabinet", ""],
       ["CO₂ incubator", "37 °C"],
@@ -246,36 +270,12 @@ const ROOMS = [
       ["Benchtop centrifuge", ""],
       ["Water bath", "37 °C"],
       ["Refrigerator", "+4 °C"]
+      ["Refrigerator", "-20 °C"]
     ],
     photos:[] },
 
-  { id:"molbio", floor:"L3", kind:"own",
-    name:"Molecular biology lab", tag:"DNA, RNA & protein",
-    box:[1050,805,55,105],
-    text:"Bench space for nucleic acid and protein work: extraction, quantification, PCR and western blotting.",
-    equipment:[
-      ["Real-time PCR system", ""],
-      ["Thermal cycler", ""],
-      ["Microvolume spectrophotometer", ""],
-      ["Electrophoresis and blotting units", ""],
-      ["Refrigerated microcentrifuge", "+4 °C"]
-    ],
-    photos:[] },
-
-  { id:"neurolab", floor:"L3", kind:"own",
-    name:"Neurobiology lab", tag:"Zinc & live imaging",
-    box:[1105,805,50,105],
-    text:"Live-cell experiments on zinc and calcium signaling with fluorescent probes.",
-    equipment:[
-      ["Inverted fluorescence microscope", ""],
-      ["Stage-top incubator", "37 °C · 5% CO₂"],
-      ["Perfusion system", ""],
-      ["Analysis workstation", ""]
-    ],
-    photos:[] },
-
-  { id:"lab-east", floor:"L3", kind:"own",
-    name:"Lab room (east)", tag:"To define",
+  { id:"lab-east", floor:"L3", kind:"shared",
+    name:"Confocal and stereomicroscope room (east)", tag:"Ziss, Nikon",
     box:[1495,700,60,75],
     text:"Use of this room to be described.",
     equipment:[
@@ -283,7 +283,7 @@ const ROOMS = [
     ],
     photos:[] },
 
-  { id:"studio", floor:"L3", kind:"own",
+  { id:"studio", floor:"L3", kind:"shared",
     name:"Team office", tag:"Desks",
     box:[1200,645,100,58],
     text:"Desks for postdocs, students and residents. Data analysis, writing and small meetings.",
