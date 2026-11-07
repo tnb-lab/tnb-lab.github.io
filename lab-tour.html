@@ -1,36 +1,520 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lab tour · TNBL</title>
-  <meta name="description" content="Translational Neurobiology Lab (TNBL), Università G. d'Annunzio Chieti-Pescara.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab tour · TNBL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
+<!-- The site's shared stylesheet: change the file name if yours is different -->
+<link rel="stylesheet" href="style.css">
+
+<!--
+╔══════════════════════════════════════════════════════════════════════╗
+║  TNBL · LAB TOUR PAGE                                                 ║
+║                                                                      ║
+║  All routine changes are made in ONE place: the block marked         ║
+║  "EDIT HERE" inside the <script> at the bottom of this file.         ║
+║  You never need to touch the styles or the drawing code.             ║
+║                                                                      ║
+║  A step-by-step guide for each kind of change (equipment, photos,    ║
+║  moving or adding a room, own vs shared, floors) is written just     ║
+║  above the "EDIT HERE" block.                                         ║
+║                                                                      ║
+║  Photos go in the folder  images/labtour/  of the website.            ║
+╚══════════════════════════════════════════════════════════════════════╝
+-->
+
+<style>
+/* Styles used only by the Lab tour page.
+   Font, colours, header and h1 come from the site's shared stylesheet. */
+:root{
+  --lt-wall:#d6d6d6;    /* walls of other rooms */
+  --lt-floor:#f4f4f4;   /* other groups' rooms */
+  --lt-corr:#fbfbfb;    /* corridors */
+  --lt-lab:#a9a9a9;     /* TNBL rooms: darker grey */
+  --lt-hover:#8d8d8d;
+  --lt-edge:#333333;    /* TNBL room outline */
+  --lt-active:#111111;  /* room currently open */
+}
+main.labtour{max-width:1200px}
+main.labtour .lede{max-width:64ch}
+[hidden]{display:none!important}
+
+/* floor switcher */
+.floors{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 18px;padding:0;list-style:none}
+.floors button{font:inherit;display:flex;align-items:center;gap:10px;background:var(--bg);color:var(--text);border:1px solid var(--lt-wall);padding:6px 12px 6px 8px;cursor:pointer;text-align:left}
+.floors button:hover{border-color:var(--lt-edge)}
+.floors button[aria-pressed="true"]{border-color:var(--lt-edge);background:var(--lt-floor)}
+.floors button:focus-visible{outline:2px solid var(--lt-edge);outline-offset:2px}
+.floors .lv{font-weight:bold}
+.floors .sub{font-size:9pt;color:var(--dim);display:block;line-height:1.3}
+.stack{display:flex;flex-direction:column;gap:2px}
+.stack i{display:block;width:16px;height:3px;background:var(--lt-wall)}
+.stack i.on{background:var(--lt-active)}
+
+.tour{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:880px){.tour{grid-template-columns:1fr}}
+.plan{min-width:0}
+.plan-box{overflow-x:auto;border:1px solid var(--line);padding:10px;background:var(--bg)}
+svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
+.wall{fill:var(--lt-floor);stroke:var(--lt-wall);stroke-width:1.2}
+.corr{fill:var(--lt-corr)}
+.void{fill:none;stroke:var(--lt-wall);stroke-dasharray:4 4}
+.lbl{font-family:inherit;font-size:11px;fill:var(--dim)}
+.room{cursor:pointer;outline:none}
+.room rect{fill:var(--lt-lab);stroke:var(--lt-edge);stroke-width:2.2;transition:fill .15s}
+.room.shared rect{stroke-dasharray:7 4}
+.room text{font-family:inherit;font-size:15px;font-weight:bold;fill:var(--text);pointer-events:none;paint-order:stroke;stroke:var(--bg);stroke-width:4px}
+.room:hover rect,.room:focus-visible rect{fill:var(--lt-hover)}
+.room:focus-visible rect{stroke-width:3.5}
+.room.on rect{fill:var(--lt-active)}
+.room.on text{fill:var(--bg);stroke:var(--lt-active)}
+
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:9pt;color:var(--dim);align-items:center}
+.sw{display:inline-block;width:18px;height:12px;vertical-align:-1px;margin-right:6px;background:var(--lt-lab);border:2px solid var(--lt-edge)}
+.sw.shared{border-style:dashed}
+.sw.other{background:var(--lt-floor);border:1px solid var(--lt-wall)}
+
+.keys{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;margin:16px 0 0;padding:0;list-style:none}
+.keys li{display:flex}
+.keys button{width:100%;font:inherit;display:flex;gap:10px;align-items:baseline;background:var(--bg);color:var(--text);border:1px solid var(--lt-wall);padding:6px 10px;cursor:pointer;text-align:left}
+.keys button.shared{border-style:dashed}
+.keys button b{min-width:1.4em}
+.keys button small{margin-left:auto;font-size:8pt;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
+.keys button:hover{border-color:var(--lt-edge)}
+.keys button[aria-pressed="true"]{border-color:var(--lt-active);background:var(--lt-active);color:var(--bg)}
+.keys button[aria-pressed="true"] small{color:var(--lt-wall)}
+.keys button:focus-visible{outline:2px solid var(--lt-edge);outline-offset:2px}
+
+.noplan{border:1px dashed var(--lt-wall);padding:28px 22px;min-height:240px;display:flex;flex-direction:column;gap:14px;justify-content:center}
+.noplan .big{font-size:32px;font-weight:bold;line-height:1}
+.noplan p{margin:0;max-width:52ch;color:var(--dim)}
+
+.card{min-width:0;border-top:3px solid var(--lt-active);padding-top:16px}
+.card .tag{font-size:9pt;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.card h2{margin:4px 0 10px}
+.card h3{font-size:9pt;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-weight:normal;margin:20px 0 8px}
+.pill{display:inline-block;font-size:8pt;font-weight:normal;letter-spacing:.06em;text-transform:uppercase;padding:0 7px;border:1.5px solid var(--lt-edge);margin-left:8px;vertical-align:1px}
+.pill.shared{border-style:dashed}
+.eq{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.eq li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px solid var(--line)}
+.eq li span:last-child{color:var(--dim);white-space:nowrap}
+.photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ph{position:relative;aspect-ratio:4/3;max-width:100%;background:var(--lt-floor);border:1px dashed var(--lt-wall);overflow:hidden;padding:0;cursor:default;font:inherit}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .ph-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:8pt;color:var(--dim);text-align:center;padding:4px;line-height:1.3}
+.ph.has{border-style:solid;cursor:zoom-in}
+.nav2{display:flex;justify-content:space-between;margin-top:22px;gap:10px}
+.nav2 button{font:inherit;font-size:9pt;background:none;border:1px solid var(--lt-wall);color:var(--text);padding:6px 12px;cursor:pointer;min-width:0}
+.nav2 button:hover{border-color:var(--lt-edge)}
+
+.lb{position:fixed;inset:0;background:rgba(17,17,17,.9);display:flex;align-items:center;justify-content:center;z-index:20;padding:24px 16px}
+.lb img{max-height:86vh;max-width:100%}
+.lb button{position:absolute;top:12px;right:16px;background:none;border:0;color:#fff;font:bold 28px inherit;cursor:pointer}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
 </head>
 <body>
+<header>
+  <a class="logo" href="index.html">TN<span class="flip">B</span>L</a>
+  <nav>
+    <a href="research.html">Research</a>
+    <a href="people.html">People</a>
+    <a href="publications.html">Publications</a>
+    <a href="news.html">News &amp; views</a>
+    <a href="resources.html">Resources</a>
+    <a href="lab-tour.html" class="active">Lab tour</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+</header>
 
-  <!-- ===== MENU (the same on every page) ===== -->
-  <header>
-    <a class="logo" href="index.html" aria-label="TNBL, home">TN<span class="flip">B</span>L</a>
-    <nav>
-      <a href="research.html">Research</a>
-      <a href="people.html">People</a>
-      <a href="publications.html">Publications</a>
-      <a href="news.html">News &amp; views</a>
-      <a href="resources.html">Resources</a>
-      <a href="lab-tour.html" class="active">Lab tour</a>
-      <a href="contacts.html">Contacts</a>
-    </nav>
-  </header>
+<main class="labtour">
+  <h1>Lab tour</h1>
+  <p class="lede">TNBL works across three floors of the CAST building. Pick a floor, then a room, to see what happens there and the equipment it holds.</p>
+  <p class="dim">CAST building · Campus "Madonna delle Piane", Chieti</p>
 
-  <main>
-    <h1>La<span class="flip">b</span> tour</h1>
-    <!-- ✏️ EDIT: add photos of the lab. Upload them into "images" and copy the <figure> block for each one. -->
-    <p class="dim">[Photos of the lab and its instruments, coming soon.]</p>
-  </main>
+  <ul class="floors" id="floors" aria-label="Floors"></ul>
 
+  <section class="tour">
+    <div class="plan">
+      <div id="planArea"></div>
+      <div class="legend">
+        <span><i class="sw"></i>TNBL room</span>
+        <span><i class="sw shared"></i>Shared with other groups</span>
+        <span><i class="sw other"></i>Other groups, services</span>
+      </div>
+      <ul class="keys" id="keys"></ul>
+    </div>
+    <article class="card" id="card" aria-live="polite"></article>
+  </section>
+</main>
+
+<div class="lb" id="lb" hidden><button aria-label="Close" id="lbx">×</button><img id="lbimg" alt=""></div>
+
+<script>
+/* ######################################################################
+   HOW TO MAKE ROUTINE CHANGES
+   ######################################################################
+
+   Everything you need to edit is in the "EDIT HERE" block below.
+   Each room is one entry between curly brackets { ... }.
+   Text always goes between double quotes "like this".
+   Keep the commas between entries and between lines.
+   After saving, reload the page in the browser to check the result.
+
+   1. CHANGE A ROOM'S EQUIPMENT (an instrument is added, moved or removed)
+      Find the room, then edit its "equipment" list. Each line is
+          ["Name of the instrument", "detail"],
+      The detail is optional (temperature, model, number of units):
+          ["CO₂ incubator", "37 °C"],
+          ["Refrigerator", "+4 °C"],
+          ["Inverted microscope", ""],
+      - To add an instrument: copy one line and change the text.
+      - To move an instrument: cut its line from one room, paste it in the other.
+      - To remove it: delete its line.
+      The last line of a list may end with or without a comma.
+
+   2. ADD PHOTOS
+      a) Upload the photo to the folder  images/labtour/  of the website
+         (landscape, about 1600 px wide, JPG, no faces or screens with data).
+      b) Use simple file names: lowercase, no spaces, e.g. culture-1.jpg
+      c) Add the path to the room's "photos" list:
+             photos:["images/labtour/culture-1.jpg", "images/labtour/culture-2.jpg"]
+      Up to 3 photos per room look best. An empty list  photos:[]  shows
+      three grey placeholders. A path to a missing file also shows a
+      placeholder, so the page never breaks.
+
+   3. CHANGE THE DESCRIPTION OR NAME
+      Edit "name" (title), "tag" (short line above the title) and "text"
+      (the description). Avoid typing a double quote " inside the text;
+      use ' instead.
+
+   4. OWN OR SHARED ROOM
+      kind:"own"     → solid outline (TNBL only)
+      kind:"shared"  → dashed outline (shared with other groups)
+
+   5. MOVE A ROOM ON THE PLAN (Level 3 only, for now)
+      The "box" sets where the room is drawn: [x, y, width, height].
+      Do not measure: the list SPARE at the very end of this file gives
+      the box of every other room on Level 3. Copy the one you need.
+      Example: box:[1300,805,100,105]
+
+   6. ADD A NEW ROOM
+      Copy a whole room entry, from  {  to  },  paste it after the last
+      room of the same floor, and change:
+        id     → a unique short name, no spaces (e.g. "imaging")
+        floor  → "L3", "L0" or "Lm1"
+        box    → only for Level 3 (see point 5); delete the line on other floors
+      Numbers, buttons and the previous/next links update by themselves.
+      The order of the rooms in the list is the order of the numbers.
+
+   7. REMOVE A ROOM
+      Delete its whole entry, from  {  to  },  including the comma after it.
+
+   8. FLOORS
+      The floor names and subtitles are in FLOORS. Level −1 and Level 0
+      have no drawn plan yet (plan:false): their rooms appear as a list.
+      When the plans of those floors are available, the drawing has to
+      be added once in the code below (ask whoever maintains the site,
+      or Claude); after that, rooms are placed with "box" as in point 5.
+
+   ###################################################################### */
+
+
+/* =====================================================================
+   EDIT HERE
+   ===================================================================== */
+
+const FLOORS = [
+  { id:"L3",  label:"Level 3",  sub:"Labs and shared facilities",     level:3,  plan:true  },
+  { id:"L0",  label:"Level 0",  sub:"PI office",                      level:0,  plan:false },
+  { id:"Lm1", label:"Level −1", sub:"Vivarium and shared facilities", level:-1, plan:false }
+];
+
+const ROOMS = [
+
+  /* ---------------- Level 3 ---------------- */
+  { id:"culture", floor:"L3", kind:"own",
+    name:"Cell culture room", tag:"iPSC & microglia",
+    box:[1000,805,50,105],
+    text:"Human iPSCs are maintained here and differentiated into microglia, under sterile conditions at biosafety level 2.",
+    equipment:[
+      ["Class II biological safety cabinet", ""],
+      ["CO₂ incubator", "37 °C"],
+      ["Inverted phase-contrast microscope", ""],
+      ["Benchtop centrifuge", ""],
+      ["Water bath", "37 °C"],
+      ["Refrigerator", "+4 °C"]
+    ],
+    photos:[] },
+
+  { id:"molbio", floor:"L3", kind:"own",
+    name:"Molecular biology lab", tag:"DNA, RNA & protein",
+    box:[1050,805,55,105],
+    text:"Bench space for nucleic acid and protein work: extraction, quantification, PCR and western blotting.",
+    equipment:[
+      ["Real-time PCR system", ""],
+      ["Thermal cycler", ""],
+      ["Microvolume spectrophotometer", ""],
+      ["Electrophoresis and blotting units", ""],
+      ["Refrigerated microcentrifuge", "+4 °C"]
+    ],
+    photos:[] },
+
+  { id:"neurolab", floor:"L3", kind:"own",
+    name:"Neurobiology lab", tag:"Zinc & live imaging",
+    box:[1105,805,50,105],
+    text:"Live-cell experiments on zinc and calcium signaling with fluorescent probes.",
+    equipment:[
+      ["Inverted fluorescence microscope", ""],
+      ["Stage-top incubator", "37 °C · 5% CO₂"],
+      ["Perfusion system", ""],
+      ["Analysis workstation", ""]
+    ],
+    photos:[] },
+
+  { id:"lab-east", floor:"L3", kind:"own",
+    name:"Lab room (east)", tag:"To define",
+    box:[1495,700,60,75],
+    text:"Use of this room to be described.",
+    equipment:[
+      ["To be listed", ""]
+    ],
+    photos:[] },
+
+  { id:"studio", floor:"L3", kind:"own",
+    name:"Team office", tag:"Desks",
+    box:[1200,645,100,58],
+    text:"Desks for postdocs, students and residents. Data analysis, writing and small meetings.",
+    equipment:[
+      ["Workstations", ""]
+    ],
+    photos:[] },
+
+  { id:"freezer", floor:"L3", kind:"shared",
+    name:"Freezer room", tag:"Sample storage",
+    box:[768,700,97,75],
+    text:"Long-term storage of cell banks, samples and reagents, with temperature alarms.",
+    equipment:[
+      ["Ultra-low freezer", "−80 °C"],
+      ["Freezer", "−20 °C"],
+      ["Refrigerator", "+4 °C"]
+    ],
+    photos:[] },
+
+  { id:"wash", floor:"L3", kind:"shared",
+    name:"Wash room", tag:"Glassware & sterilisation",
+    box:[700,700,68,75],
+    text:"Glassware washing, drying and sterilisation.",
+    equipment:[
+      ["Autoclave", "121 °C"],
+      ["Drying oven", ""],
+      ["Purified water system", ""]
+    ],
+    photos:[] },
+
+  { id:"centrifuge", floor:"L3", kind:"shared",
+    name:"Centrifuge room", tag:"Centrifugation",
+    box:[1195,700,50,75],
+    text:"High-speed and refrigerated centrifuges, kept apart from the labs for noise and vibration.",
+    equipment:[
+      ["Refrigerated high-speed centrifuge", "+4 °C"],
+      ["Ultracentrifuge", ""]
+    ],
+    photos:[] },
+
+  { id:"safety", floor:"L3", kind:"shared",
+    name:"Safety cabinet room", tag:"Chemical storage",
+    box:[710,548,65,57],
+    text:"Ventilated safety cabinets for flammable, corrosive and toxic chemicals.",
+    equipment:[
+      ["Flammables safety cabinet", ""],
+      ["Acids and bases cabinet", ""]
+    ],
+    photos:[] },
+
+  /* ---------------- Level 0 ---------------- */
+  { id:"pi-office", floor:"L0", kind:"own",
+    name:"PI office", tag:"Alberto Granzotto",
+    text:"Office of the lab head. Meetings with students and collaborators.",
+    equipment:[
+      ["Meeting table", ""]
+    ],
+    photos:[] },
+
+  /* ---------------- Level −1 ---------------- */
+  { id:"vivarium", floor:"Lm1", kind:"shared",
+    name:"Vivarium", tag:"Animal facility",
+    text:"Shared animal facility for housing and breeding mouse lines.",
+    equipment:[
+      ["Individually ventilated cage racks", ""],
+      ["Cage-changing station", ""]
+    ],
+    photos:[] },
+
+  { id:"facility-1", floor:"Lm1", kind:"shared",
+    name:"Shared facility", tag:"To define",
+    text:"Shared core facility on Level −1. Name and use to be added.",
+    equipment:[
+      ["To be listed", ""]
+    ],
+    photos:[] }
+
+];
+
+/* =====================================================================
+   END OF EDIT HERE — no need to change anything below this line
+   ===================================================================== */
+
+const NS="http://www.w3.org/2000/svg";
+const $=s=>document.querySelector(s);
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);parent.appendChild(e);return e;}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+let curFloor=FLOORS[0].id;
+
+/* Level 3 outline, traced from the CAST evacuation plan */
+const PLANS = {
+  L3(svg){
+    const R=(x,y,w,h,c="wall")=>el("rect",{class:c,x,y,width:w,height:h},svg);
+    const row=(xs,y,h)=>{for(let i=0;i<xs.length-1;i++)R(xs[i],y,xs[i+1]-xs[i],h);};
+    const T=(x,y,t,a="middle")=>{el("text",{class:"lbl",x,y,"text-anchor":a},svg).textContent=t;};
+    // corridors
+    R(270,515,1275,33,"corr"); R(610,548,45,152,"corr"); R(860,548,100,152,"corr");
+    R(1145,548,55,152,"corr"); R(865,700,85,75,"corr"); R(1150,700,45,75,"corr");
+    R(220,775,1375,30,"corr");
+    // north wing
+    row([270,320,370,470,520],435,80); row([610,660,710,760,810,860],435,80);
+    row([950,1005,1105,1200],435,80); row([1300,1350,1400,1450,1495,1545],435,80);
+    R(520,380,90,135); R(860,380,90,135); R(1200,380,100,135);
+    R(180,380,90,170); R(1545,380,95,170);
+    // central block
+    R(520,548,90,102); R(520,650,90,50);
+    R(655,548,55,57); R(775,548,35,57); R(655,605,155,90);
+    [548,586,624,662].forEach(y=>R(810,y,50,38));
+    el("rect",{class:"void",x:960,y:555,width:185,height:145},svg);
+    el("path",{class:"wall",d:"M985 572 a50 50 0 0 1 0 100 z"},svg);
+    R(1200,555,100,45); R(1200,600,100,45);
+    // south wing, office row
+    row([265,320,370,420,470,515,565,610],700,75);
+    row([655,700],700,75); row([950,1050,1110,1150],700,75);
+    row([1245,1300,1345,1400,1450,1495],700,75);
+    // south wing, lab row
+    row([265,320,370,520,565,610,700,760,810,905,1000],805,105);
+    row([1155,1300,1400,1450,1500,1555],805,105);
+    R(220,765,45,120); R(1555,765,40,120);
+    // labels
+    T(907,630,"hall"); T(1080,640,"void"); T(835,535,"lifts"); T(632,540,"corridor"); T(1360,532,"corridor");
+    T(732,654,"changing rooms"); T(1272,738,"cold"); T(1272,750,"room"); T(857,900,"virology");
+    T(950,575,"stairs","end"); T(196,372,"W","start"); T(1640,372,"E","end");
+    return "170 365 1480 555"; // viewBox
+  }
+};
+
+function renderFloors(){
+  const ul=$("#floors"); ul.innerHTML="";
+  const lv=FLOORS.map(f=>f.level), top=Math.max(...lv), bot=Math.min(...lv);
+  FLOORS.forEach(f=>{
+    const n=ROOMS.filter(r=>r.floor===f.id).length;
+    let bars=""; for(let l=top;l>=bot;l--) bars+=`<i class="${l===f.level?"on":""}"></i>`;
+    const li=document.createElement("li");
+    li.innerHTML=`<button type="button" aria-pressed="${f.id===curFloor}">
+      <span class="stack" aria-hidden="true">${bars}</span>
+      <span><span class="lv">${esc(f.label)}</span><span class="sub">${esc(f.sub)} · ${n} room${n===1?"":"s"}</span></span></button>`;
+    li.firstElementChild.onclick=()=>setFloor(f.id);
+    ul.appendChild(li);
+  });
+}
+
+function setFloor(id){
+  curFloor=id; const f=FLOORS.find(x=>x.id===id);
+  const rooms=ROOMS.filter(r=>r.floor===id);
+  renderFloors();
+  const area=$("#planArea"); area.innerHTML="";
+  if(f.plan && PLANS[id]){
+    const box=document.createElement("div"); box.className="plan-box"; area.appendChild(box);
+    const svg=el("svg",{class:"plan-svg",role:"group","aria-label":`Simplified floor plan, ${f.label}`},box);
+    svg.setAttribute("viewBox",PLANS[id](svg));
+    rooms.forEach((r,i)=>{
+      if(!r.box) return;
+      const [x,y,w,h]=r.box;
+      const g=el("g",{class:`room ${r.kind}`,tabindex:"0",role:"button","aria-label":`${i+1}. ${r.name}`,"data-id":r.id},svg);
+      el("rect",{x,y,width:w,height:h},g);
+      el("text",{x:x+w/2,y:y+h/2+5,"text-anchor":"middle"},g).textContent=i+1;
+      g.onclick=()=>show(r.id);
+      g.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();show(r.id);}};
+    });
+  } else {
+    area.innerHTML=`<div class="noplan"><div class="big">${esc(f.label)}</div>
+      <p>${esc(f.sub)}. The floor plan of this level will be added soon; the rooms are listed below.</p></div>`;
+  }
+  const keys=$("#keys"); keys.innerHTML="";
+  rooms.forEach((r,i)=>{
+    const li=document.createElement("li");
+    li.innerHTML=`<button type="button" class="${r.kind}" data-id="${esc(r.id)}" aria-pressed="false"><b>${i+1}</b>${esc(r.name)}<small>${r.kind==="own"?"TNBL":"shared"}</small></button>`;
+    li.firstElementChild.onclick=()=>show(r.id);
+    keys.appendChild(li);
+  });
+  if(rooms.length) show(rooms[0].id); else $("#card").innerHTML="";
+}
+
+function show(id){
+  const rooms=ROOMS.filter(r=>r.floor===curFloor);
+  const i=rooms.findIndex(r=>r.id===id), r=rooms[i], f=FLOORS.find(x=>x.id===curFloor);
+  document.querySelectorAll(".room").forEach(g=>g.classList.toggle("on",g.dataset.id===id));
+  document.querySelectorAll(".keys button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===id));
+  const slots=(r.photos&&r.photos.length)?r.photos:[null,null,null];
+  const prev=rooms[(i-1+rooms.length)%rooms.length], next=rooms[(i+1)%rooms.length];
+  $("#card").innerHTML=`
+    <div class="tag">${esc(f.label)} · room ${i+1}</div>
+    <h2>${esc(r.name)}<span class="pill ${r.kind}">${r.kind==="own"?"TNBL":"shared"}</span></h2>
+    <p>${esc(r.text)}</p>
+    <h3>Equipment</h3>
+    <ul class="eq">${(r.equipment||[]).map(([a,b])=>`<li><span>${esc(a)}</span><span>${esc(b||"")}</span></li>`).join("")}</ul>
+    <h3>Photos</h3>
+    <div class="photos">${slots.map((p,k)=>`
+      <button class="ph" type="button" data-src="${p?esc(p):""}" aria-label="Photo ${k+1}">
+        ${p?`<img src="${esc(p)}" alt="${esc(r.name)}, photo ${k+1}" loading="lazy">`:""}
+        <span class="ph-empty">photo ${k+1}<br>${p?esc(p.split("/").pop()):"coming soon"}</span>
+      </button>`).join("")}</div>
+    ${rooms.length>1?`<div class="nav2"><button type="button" id="prev">← ${esc(prev.name)}</button><button type="button" id="next">${esc(next.name)} →</button></div>`:""}`;
+  $("#card").querySelectorAll(".ph").forEach(b=>{
+    const img=b.querySelector("img");
+    if(img){img.onload=()=>{b.classList.add("has");b.querySelector(".ph-empty").hidden=true;};img.onerror=()=>img.remove();}
+    b.onclick=()=>{if(b.classList.contains("has"))openLb(b.dataset.src);};
+  });
+  if(rooms.length>1){$("#prev").onclick=()=>show(prev.id);$("#next").onclick=()=>show(next.id);}
+}
+
+const lb=$("#lb"),lbimg=$("#lbimg");
+function openLb(src){lbimg.src=src;lb.hidden=false;$("#lbx").focus();}
+function closeLb(){lb.hidden=true;lbimg.src="";}
+lb.onclick=e=>{if(e.target!==lbimg)closeLb();};
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!lb.hidden)closeLb();});
+
+setFloor(curFloor);
+
+/* SPARE — boxes of the other Level 3 rooms, ready to copy into "box".
+   Write them as [x, y, width, height]; width = right x − left x.
+
+   North wing (y 435, height 80):
+     [270,435,50,80]  [320,435,50,80]  [370,435,100,80] [610,435,50,80]  [660,435,50,80]
+     [710,435,50,80]  [760,435,50,80]  [810,435,50,80]  [950,435,55,80]  [1005,435,100,80]
+     [1105,435,95,80] [1300,435,50,80] [1350,435,50,80] [1400,435,50,80] [1450,435,45,80]
+     [1495,435,50,80]
+   Central block:
+     [520,548,90,102] studio · [520,650,90,50] studio · [655,548,55,57] laundry
+     [1200,555,100,45] studio · [1200,600,100,45] studio
+   South wing, office row (y 700, height 75):
+     [265,700,55,75] [320,700,50,75] [370,700,50,75] [420,700,50,75] [470,700,45,75]
+     [515,700,50,75] [565,700,45,75] [950,700,100,75] freezer · [1050,700,60,75] wash
+     [1245,700,55,75] cold room · [1300,700,45,75] [1345,700,55,75] [1400,700,50,75] [1450,700,45,75]
+   South wing, lab row (y 805, height 105):
+     [265,805,55,105] [320,805,50,105] [370,805,150,105] [520,805,45,105] [565,805,45,105]
+     [610,805,90,105] [700,805,60,105] [760,805,50,105] [810,805,95,105] virology
+     [905,805,95,105] virology · [1155,805,145,105] [1300,805,100,105] [1400,805,50,105]
+     [1450,805,50,105] [1500,805,55,105]
+*/
+</script>
 </body>
 </html>
