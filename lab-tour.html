@@ -235,42 +235,45 @@ const FLOORS = [
 const ROOMS = [
 
   /* ---------------- Level 3 ---------------- */
-     { id:"culture", floor:"L3", kind:"own",
-    name:"Cell culture room", tag:"iPSC & microglia",
+     { id:"imaging", floor:"L3", kind:"own",
+    name:"Imaging room", tag:"imaging",
     box:[1000,805,50,105],
-    text:"Human iPSCs are maintained here BSL2.",
+    text:"Live cell experiments and imaging tools",
     equipment:[
-      ["Class II biological safety cabinet", ""],
-      ["CO₂ incubator", "37 °C"],
-      ["Inverted phase-contrast microscope", ""],
-      ["Benchtop centrifuge", ""],
-      ["Water bath", "37 °C"],
-      ["Refrigerator", "+4 °C"]
-      ["Refrigerator", "-20 °C"]
+      ["Inverted fluorescent microscope", "Nikon TE 300"]
+      ["Inverted fluorescent microscope", "Zeiss Axio Observer"]
+      ["Custom made perfusion system",],
+      ["Plate reader", "SpectraMax 190"]
+      ["A workshop area - To fix what is not working"]       
     ],
     photos:[] },
 
-       { id:"cell biology", floor:"L3", kind:"own",
+      { id:"cell biology", floor:"L3", kind:"own",
     name:"Molecular biology lab", tag:"Protein, DNA, RNA",
     box:[1050,805,55,105],
     text:"Bench space for nucleic acid and protein work: extraction, quantification, PCR and western blotting.",
     equipment:[
       ["Thermal cycler", ""],
-      ["Electrophoresis and blotting units", ""],
+      ["Electrophoresis and blotting units", "BioRad"],
       ["Refrigerated microcentrifuge", "+4 °C"]
+      ["Standard incubator"]
+      ["Shaker"]
       ["Chemical hood"]
     ],
     photos:[] },
    
-      { id:"neurolab", floor:"L3", kind:"own",
-    name:"Imaging lab", tag:"Live cell imaging",
+      { id:"culture", floor:"L3", kind:"own",
+    name:"Culture room", tag:"Cell culture",
     box:[1105,805,50,105],
-    text:"Live-cell experiments with fluorescent probes.",
+    text:"Human iPSCs are maintained here BSL2.",
     equipment:[
-      ["Inverted fluorescence microscope", ""],
-      ["Inverted fluorescence microscope", ""]
-      ["Custom made perfusion system", ""],
-      ["Plate reader", "SpectraMax 190"]
+      ["Class II biological safety cabinet", ""],
+      ["CO₂ incubator", ""]
+      ["Inverted phase-contrast microscope", ""],
+      ["Benchtop centrifuge", ""],
+      ["Water bath", "37 °C"],
+      ["Refrigerator", "+4 °C"]
+      ["Refrigerator", "-20 °C"]
     ],
     photos:[] },
 
