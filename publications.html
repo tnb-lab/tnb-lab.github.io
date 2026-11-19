@@ -35,11 +35,20 @@
       font: inherit;
       text-align: left;
       cursor: pointer;
+      transition: box-shadow .3s;
     }
-    .area:hover { background: #f4f4f4; }
-    .area.selected, .area.selected:hover, .area.selected:focus { background: #dcdcdc; }
+    /* Same effect as the People page: pictures in black and white;
+       with the cursor on a square (or once it is selected) the picture
+       turns to colour and a coloured block appears behind the square. */
+    .area { --tint: var(--peacock); }
+    .area:nth-child(4n+2) { --tint: var(--yellow); }
+    .area:nth-child(4n+3) { --tint: var(--sienna); }
+    .area:nth-child(4n+4) { --tint: var(--violet); }
+    .area:hover, .area:focus-visible, .area.selected { box-shadow: 8px 8px 0 var(--tint); }
+    .area.selected { border-width: 2px; padding: 11px; }
     .pic { width: 72px; height: 72px; align-self: center; margin: auto 0; display: flex; align-items: center; justify-content: center; }
-    .pic img { max-width: 100%; max-height: 100%; display: block; }
+    .pic img { max-width: 100%; max-height: 100%; display: block; filter: grayscale(100%); transition: filter .3s; }
+    .area:hover .pic img, .area:focus-visible .pic img, .area.selected .pic img { filter: none; }
     .pic:empty { border: 1px dashed #bbb; }
     .area .num, .area .label { font-size: 9pt; line-height: 1.35; }
     .area .label { min-height: 4.1em; display: flex; align-items: flex-end; }
@@ -160,7 +169,7 @@
 
       <li data-area="reviews"><b>Granzotto A</b>, Vissel B, Sensi SL. Lost in translation: Inconvenient truths on the utility of mouse models in Alzheimer’s disease research. <em>eLife</em> 2024. <a href="https://doi.org/10.7554/eLife.90633">doi</a></li>
       <li data-area="reviews"><b>Granzotto A</b>, Sensi SL. Once upon a time, the Amyloid Cascade Hypothesis. <em>Ageing Res Rev</em> 2024. <a href="https://doi.org/10.1016/j.arr.2023.102161">doi</a></li>
-      <li data-area="reviews">Delli Pizzi S, <b>Granzotto A</b>, Bomba M, Frazzini V, Onofrj M, Sensi SL. Acting Before; A Combined Strategy to Counteract the Onset and Progression of Dementia. Curr Alzheimer Res. 2020;17(9):790-804.
+      <li data-area="reviews">Delli Pizzi S, <b>Granzotto A</b>, Bomba M, Frazzini V, Onofrj M, Sensi SL. Acting Before; A Combined Strategy to Counteract the Onset and Progression of Dementia. Curr Alzheimer Res. 2020;17(9):790-804.</li>
       <li data-area="reviews"><b>Granzotto A</b>, Sensi SL. Minocycline-A Lesson from a Failure. <em>JAMA Neurol</em> 2020. <a href="https://doi.org/10.1001/jamaneurol.2020.1154">doi</a></li>
       <li data-area="reviews"><b>Granzotto A</b>, Zatta P. Resveratrol and Alzheimer’s disease: Message in a bottle on red wine and cognition. <em>Front Aging Neurosci</em> 2014. <a href="https://doi.org/10.3389/fnagi.2014.00095">doi</a></li> 
 
