@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap">
 <!-- The site's shared stylesheet: change the file name if yours is different -->
 <link rel="stylesheet" href="style.css">
+<script src="menu.js" defer></script>
 
 <!--
 ╔══════════════════════════════════════════════════════════════════════╗
@@ -35,10 +36,11 @@
   --lt-lab:#a9a9a9;     /* TNBL rooms: darker grey */
   --lt-edge:#333333;    /* TNBL room outline */
   /* Palette from "A Dictionary of Color Combinations" */
-  --lt-yellow:#e6a817;  /* Orange Yellow  · hover on a TNBL room */
-  --lt-sienna:#a8401e;  /* Burnt Sienna   · hover on a shared room */
-  --lt-peacock:#1f7a8c; /* Peacock Blue   · room currently open */
-  --lt-violet:#2d2752;  /* Violet Blue    · outline while hovering */
+  /* Palette: the codes live in style.css */
+  --lt-yellow:var(--yellow,#e6a817);   /* hover on a TNBL room */
+  --lt-sienna:var(--sienna,#a8401e);   /* hover on a shared room */
+  --lt-peacock:var(--peacock,#1f7a8c); /* room currently open */
+  --lt-violet:var(--violet,#2d2752);   /* outline while hovering */
   --lt-hover:var(--lt-yellow);
   --lt-active:var(--lt-peacock);
 }
