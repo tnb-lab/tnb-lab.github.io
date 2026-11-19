@@ -33,9 +33,14 @@
   --lt-floor:#f4f4f4;   /* other groups' rooms */
   --lt-corr:#fbfbfb;    /* corridors */
   --lt-lab:#a9a9a9;     /* TNBL rooms: darker grey */
-  --lt-hover:#8d8d8d;
   --lt-edge:#333333;    /* TNBL room outline */
-  --lt-active:#111111;  /* room currently open */
+  /* Palette from "A Dictionary of Color Combinations" */
+  --lt-yellow:#e6a817;  /* Orange Yellow  · hover on a TNBL room */
+  --lt-sienna:#a8401e;  /* Burnt Sienna   · hover on a shared room */
+  --lt-peacock:#1f7a8c; /* Peacock Blue   · room currently open */
+  --lt-violet:#2d2752;  /* Violet Blue    · outline while hovering */
+  --lt-hover:var(--lt-yellow);
+  --lt-active:var(--lt-peacock);
 }
 main.labtour{max-width:1200px}
 main.labtour .lede{max-width:64ch}
@@ -66,10 +71,12 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
 .room rect{fill:var(--lt-lab);stroke:var(--lt-edge);stroke-width:2.2;transition:fill .15s}
 .room.shared rect{stroke-dasharray:7 4}
 .room text{font-family:inherit;font-size:15px;font-weight:bold;fill:var(--text);pointer-events:none;paint-order:stroke;stroke:var(--bg);stroke-width:4px}
-.room:hover rect,.room:focus-visible rect{fill:var(--lt-hover)}
+.room:hover rect,.room:focus-visible rect,.room.hl rect{fill:var(--lt-hover);stroke:var(--lt-violet)}
+.room.shared:hover rect,.room.shared:focus-visible rect,.room.shared.hl rect{fill:var(--lt-sienna)}
+.room.shared:hover text,.room.shared:focus-visible text,.room.shared.hl text{fill:#fff;stroke:var(--lt-sienna)}
 .room:focus-visible rect{stroke-width:3.5}
-.room.on rect{fill:var(--lt-active)}
-.room.on text{fill:var(--bg);stroke:var(--lt-active)}
+.room.on rect,.room.on:hover rect,.room.on.hl rect{fill:var(--lt-active);stroke:var(--lt-violet)}
+.room.on text,.room.on:hover text,.room.on.hl text{fill:#fff;stroke:var(--lt-active)}
 
 .legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:9pt;color:var(--dim);align-items:center}
 .sw{display:inline-block;width:18px;height:12px;vertical-align:-1px;margin-right:6px;background:var(--lt-lab);border:2px solid var(--lt-edge)}
@@ -82,9 +89,11 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
 .keys button.shared{border-style:dashed}
 .keys button b{min-width:1.4em}
 .keys button small{margin-left:auto;font-size:8pt;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
-.keys button:hover{border-color:var(--lt-edge)}
-.keys button[aria-pressed="true"]{border-color:var(--lt-active);background:var(--lt-active);color:var(--bg)}
-.keys button[aria-pressed="true"] small{color:var(--lt-wall)}
+.keys button:hover{border-color:var(--lt-violet);background:var(--lt-yellow)}
+.keys button.shared:hover{background:var(--lt-sienna);color:#fff}
+.keys button.shared:hover small{color:#f3e6df}
+.keys button[aria-pressed="true"],.keys button[aria-pressed="true"]:hover{border-color:var(--lt-active);background:var(--lt-active);color:#fff}
+.keys button[aria-pressed="true"] small{color:#d7ecef}
 .keys button:focus-visible{outline:2px solid var(--lt-edge);outline-offset:2px}
 
 .noplan{border:1px dashed var(--lt-wall);padding:28px 22px;min-height:240px;display:flex;flex-direction:column;gap:14px;justify-content:center}
@@ -235,61 +244,61 @@ const FLOORS = [
 const ROOMS = [
 
   /* ---------------- Level 3 ---------------- */
-   { id:"imaging", floor:"L3", kind:"own",
-    name:"Imaging room", tag:"imaging",
+  { id:"imaging", floor:"L3", kind:"own",
+    name:"Imaging room", tag:"Imaging",
     box:[1000,805,50,105],
-    text:"Live cell experiments and imaging tools",
+    text:"Live cell experiments and imaging tools.",
     equipment:[
-      ["Inverted fluorescent microscope", "Nikon TE 300"]
-      ["Inverted fluorescent microscope", "Zeiss Axio Observer"]
-      ["Custom made perfusion system",],
-      ["Plate reader", "SpectraMax 190"]
-      ["A workshop area - To fix what is not working"]       
+      ["Inverted fluorescence microscope", "Nikon TE 300"],
+      ["Inverted fluorescence microscope", "Zeiss Axio Observer"],
+      ["Custom-made perfusion system", ""],
+      ["Plate reader", "SpectraMax 190"],
+      ["Workshop area", "to fix what is not working"]
     ],
     photos:[] },
 
-   { id:"cell biology", floor:"L3", kind:"own",
+  { id:"molbio", floor:"L3", kind:"own",
     name:"Molecular biology lab", tag:"Protein, DNA, RNA",
     box:[1050,805,55,105],
     text:"Bench space for nucleic acid and protein work: extraction, quantification, PCR and western blotting.",
     equipment:[
       ["Thermal cycler", ""],
       ["Electrophoresis and blotting units", "BioRad"],
-      ["Refrigerated microcentrifuge", "+4 °C"]
-      ["Standard incubator"]
-      ["Shaker"]
-      ["Chemical hood"]
+      ["Refrigerated microcentrifuge", "+4 °C"],
+      ["Standard incubator", ""],
+      ["Shaker", ""],
+      ["Chemical hood", ""]
     ],
     photos:[] },
-   
-   { id:"culture", floor:"L3", kind:"own",
+
+  { id:"culture", floor:"L3", kind:"own",
     name:"Culture room", tag:"Cell culture",
     box:[1105,805,50,105],
-    text:"Human iPSCs are maintained here BSL2.",
+    text:"Human iPSCs are maintained here (BSL2).",
     equipment:[
       ["Class II biological safety cabinet", ""],
-      ["CO₂ incubator", ""]
+      ["CO₂ incubator", ""],
       ["Inverted phase-contrast microscope", ""],
       ["Benchtop centrifuge", ""],
       ["Water bath", "37 °C"],
-      ["Refrigerator", "+4 °C"]
-      ["Refrigerator", "-20 °C"]
+      ["Refrigerator", "+4 °C"],
+      ["Freezer", "−20 °C"]
     ],
     photos:[] },
 
   { id:"lab-east", floor:"L3", kind:"shared",
     name:"Confocal and stereomicroscope room (east)", tag:"Zeiss, Nikon",
     box:[1495,700,60,75],
-    text:"Confocal imaging and large sample acquisition",
+    text:"Confocal imaging and large sample acquisition.",
     equipment:[
-      ["Zeiss LSM 800 Airyscan", ""]
+      ["Zeiss LSM 800 Airyscan", ""],
       ["Zeiss LSM 800 Airyscan", ""]
     ],
     photos:[] },
 
   { id:"studio", floor:"L3", kind:"shared",
     name:"Team office", tag:"Desks",
-    box:[1200,645,100,58],
+    box:[1200,645,100,55],
     text:"Desks for postdocs, students and residents. Data analysis, writing and small meetings.",
     equipment:[
       ["Workstations", ""]
@@ -456,7 +465,10 @@ function setFloor(id){
   rooms.forEach((r,i)=>{
     const li=document.createElement("li");
     li.innerHTML=`<button type="button" class="${r.kind}" data-id="${esc(r.id)}" aria-pressed="false"><b>${i+1}</b>${esc(r.name)}<small>${r.kind==="own"?"TNBL":"shared"}</small></button>`;
-    li.firstElementChild.onclick=()=>show(r.id);
+    const b=li.firstElementChild;
+    b.onclick=()=>show(r.id);
+    const hl=on=>document.querySelectorAll(".room").forEach(g=>{if(g.dataset.id===r.id)g.classList.toggle("hl",on);});
+    b.onmouseenter=()=>hl(true); b.onmouseleave=()=>hl(false);
     keys.appendChild(li);
   });
   if(rooms.length) show(rooms[0].id); else $("#card").innerHTML="";
