@@ -31,11 +31,20 @@
       font: inherit;
       text-align: left;
       cursor: pointer;
+      transition: box-shadow .3s;
     }
-    .area:hover { background: #f4f4f4; }
-    .area.selected, .area.selected:hover, .area.selected:focus { background: #dcdcdc; }
+    /* Same effect as the People page: pictures in black and white;
+       with the cursor on a square (or once it is selected) the picture
+       turns to colour and a coloured block appears behind the square. */
+    .area { --tint: var(--peacock); }
+    .area:nth-child(4n+2) { --tint: var(--yellow); }
+    .area:nth-child(4n+3) { --tint: var(--sienna); }
+    .area:nth-child(4n+4) { --tint: var(--violet); }
+    .area:hover, .area:focus-visible, .area.selected { box-shadow: 8px 8px 0 var(--tint); }
+    .area.selected { border-width: 2px; padding: 11px; }
     .pic { width: 72px; height: 72px; align-self: center; margin: auto 0; display: flex; align-items: center; justify-content: center; }
-    .pic img { max-width: 100%; max-height: 100%; display: block; }
+    .pic img { max-width: 100%; max-height: 100%; display: block; filter: grayscale(100%); transition: filter .3s; }
+    .area:hover .pic img, .area:focus-visible .pic img, .area.selected .pic img { filter: none; }
     .pic:empty { border: 1px dashed #bbb; }
     .area .num, .area .label { font-size: 9pt; line-height: 1.35; }
     .area .label { min-height: 4.1em; display: flex; align-items: flex-end; }
