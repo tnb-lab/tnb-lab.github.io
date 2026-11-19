@@ -132,7 +132,7 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
 <main class="labtour">
   <h1>Lab tour</h1>
   <p class="lede">TNBL works across three floors of the CAST building. Pick a floor, then a room, to see what happens there and the equipment it holds.</p>
-  <p class="dim">CAST building · Campus "Madonna delle Piane", Chieti</p>
+  <p class="dim">CAST building, Chieti</p>
 
   <ul class="floors" id="floors" aria-label="Floors"></ul>
 
@@ -235,30 +235,6 @@ const FLOORS = [
 const ROOMS = [
 
   /* ---------------- Level 3 ---------------- */
-   { id:"neurolab", floor:"L3", kind:"own",
-    name:"Imaging lab", tag:"Live cell imaging",
-    box:[1105,805,50,105],
-    text:"Live-cell experiments with fluorescent probes.",
-    equipment:[
-      ["Inverted fluorescence microscope", ""],
-      ["Inverted fluorescence microscope", ""]
-      ["Custom made perfusion system", ""],
-      ["Plate reader", "SpectraMax 190"]
-    ],
-    photos:[] },
-
-    { id:"cell biology", floor:"L3", kind:"own",
-    name:"Molecular biology lab", tag:"Protein, DNA, RNA",
-    box:[1050,805,55,105],
-    text:"Bench space for nucleic acid and protein work: extraction, quantification, PCR and western blotting.",
-    equipment:[
-      ["Thermal cycler", ""],
-      ["Electrophoresis and blotting units", ""],
-      ["Refrigerated microcentrifuge", "+4 °C"]
-      ["Chemical hood"]
-    ],
-    photos:[] },
-
      { id:"culture", floor:"L3", kind:"own",
     name:"Cell culture room", tag:"iPSC & microglia",
     box:[1000,805,50,105],
@@ -271,6 +247,30 @@ const ROOMS = [
       ["Water bath", "37 °C"],
       ["Refrigerator", "+4 °C"]
       ["Refrigerator", "-20 °C"]
+    ],
+    photos:[] },
+
+       { id:"cell biology", floor:"L3", kind:"own",
+    name:"Molecular biology lab", tag:"Protein, DNA, RNA",
+    box:[1050,805,55,105],
+    text:"Bench space for nucleic acid and protein work: extraction, quantification, PCR and western blotting.",
+    equipment:[
+      ["Thermal cycler", ""],
+      ["Electrophoresis and blotting units", ""],
+      ["Refrigerated microcentrifuge", "+4 °C"]
+      ["Chemical hood"]
+    ],
+    photos:[] },
+   
+      { id:"neurolab", floor:"L3", kind:"own",
+    name:"Imaging lab", tag:"Live cell imaging",
+    box:[1105,805,50,105],
+    text:"Live-cell experiments with fluorescent probes.",
+    equipment:[
+      ["Inverted fluorescence microscope", ""],
+      ["Inverted fluorescence microscope", ""]
+      ["Custom made perfusion system", ""],
+      ["Plate reader", "SpectraMax 190"]
     ],
     photos:[] },
 
@@ -337,7 +337,7 @@ const ROOMS = [
   /* ---------------- Level 0 ---------------- */
   { id:"pi-office", floor:"L0", kind:"own",
     name:"PI office", tag:"Alberto Granzotto",
-    text:"Office of the lab head. Meetings with students and collaborators.",
+    text:"Alberto office. DO NOT DISTURB.",
     equipment:[
       ["Meeting table", ""]
     ],
