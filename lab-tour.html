@@ -125,10 +125,250 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
 .lb button{position:absolute;top:12px;right:16px;background:none;border:0;color:#fff;font:bold 28px inherit;cursor:pointer}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+
+<!-- =========================================================
+     SWISS LAYOUT (header, grid, title, footer)
+     Applies to this page only (everything starts with "body.swiss").
+     ========================================================= -->
+<style>
+    body.swiss {
+      --s-bg:      var(--bg, #ffffff);
+      --s-text:    var(--text, #111111);
+      --s-dim:     var(--dim, #777777);
+      --s-line:    var(--line, #e4e4e4);
+      --s-yellow:  var(--yellow, #e6a817);
+      --s-peacock: var(--peacock, #1f7a8c);
+      --s-sienna:  var(--sienna, #a8401e);
+      --s-violet:  var(--violet, #2d2752);
+
+      margin: 0;
+      padding: 0;
+      max-width: none;
+      background: var(--s-bg);
+      color: var(--s-text);
+      font-family: "Courier Prime", "Courier New", monospace;
+      font-size: 11pt;
+      line-height: 1.4;
+    }
+
+    /* The 12-column grid every block sits on */
+    body.swiss .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 20px;
+      padding: 0 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    /* ---------- header: logo + menu ---------- */
+    body.swiss header {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 20px;
+      align-items: start;
+      padding: 32px 40px 18px;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      border: 0;
+      background: none;
+    }
+    body.swiss header .logo {
+      grid-column: 1 / 4;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--s-text);
+      text-decoration: none;
+    }
+    body.swiss header nav {
+      grid-column: 4 / 13;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      column-gap: 20px;
+      row-gap: 14px;
+    }
+    body.swiss header nav a {
+      color: var(--s-text);
+      text-decoration: none;
+      font-size: 11px;
+      line-height: 1.3;
+      padding-top: 8px;
+      border-top: 1px solid var(--s-text);
+    }
+    body.swiss header nav a:hover,
+    body.swiss header nav a.active {
+      color: var(--s-text);
+      text-decoration: none;
+      border-top: 3px solid var(--s-peacock);
+      padding-top: 6px;
+    }
+
+    /* thick rule under the header, thin rules between themes */
+    body.swiss .rule {
+      grid-column: 1 / -1;
+      height: 0;
+      border-top: 4px solid var(--s-text);
+    }
+
+    /* ---------- page title ---------- */
+    body.swiss main {
+      padding-top: 0;
+      padding-bottom: 0;
+      text-align: left;
+    }
+    body.swiss h1 {
+      grid-column: 1 / 7;
+      margin: 40px 0 64px;
+      font-size: clamp(34px, 4.1vw, 60px);
+      font-weight: 700;
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      text-transform: none;
+    }
+    body.swiss h1::after { display: none; }
+    body.swiss .flip {
+      display: inline-block;
+      transform: scaleX(-1);
+      color: var(--s-peacock);
+    }
+
+    /* ---------- footer ---------- */
+    body.swiss footer.grid {
+      padding-top: 16px;
+      padding-bottom: 32px;
+    }
+    body.swiss footer .rule { border-top-width: 1px; }
+    body.swiss footer p {
+      margin: 10px 0 0;
+      font-size: 11px;
+      color: var(--s-dim);
+    }
+    body.swiss footer .left  { grid-column: 1 / 7; }
+    body.swiss footer .right { grid-column: 7 / 13; text-align: right; }
+
+
+    /* ---------- title and intro ---------- */
+    body.swiss main.labtour { max-width: 1400px; }
+    body.swiss main.labtour h1 { grid-column: 1 / 7; }
+    body.swiss .intro {
+      grid-column: 7 / 13;
+      margin: 46px 0 56px;
+      padding-left: 16px;
+      border-left: 4px solid var(--s-yellow);
+    }
+    body.swiss .intro .lede { margin: 0 0 8px; max-width: none; }
+    body.swiss .intro .dim { margin: 0; font-size: 11px; color: var(--s-dim); }
+
+    /* ---------- floor switcher: one column per floor, rule on top ---------- */
+    body.swiss .floors {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      margin: 0 0 32px;
+    }
+    body.swiss .floors button {
+      width: 100%;
+      background: none;
+      border: 0;
+      border-top: 1px solid var(--s-text);
+      padding: 10px 0 0;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    body.swiss .floors button:hover { border-top: 3px solid var(--s-violet); padding-top: 8px; background: none; }
+    body.swiss .floors button[aria-pressed="true"] { border-top: 3px solid var(--s-peacock); padding-top: 8px; background: none; }
+    body.swiss .floors .lv { font-size: clamp(18px, 1.8vw, 26px); line-height: 1.1; }
+    body.swiss .floors .sub { font-size: 11px; margin-top: 4px; }
+    body.swiss .stack { margin-top: 6px; }
+
+    /* ---------- plan + card ---------- */
+    body.swiss .tour {
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 20px;
+      row-gap: 32px;
+      padding-top: 14px;
+      border-top: 4px solid var(--s-text);
+      margin-bottom: 56px;
+    }
+    body.swiss .tour .plan { grid-column: 1 / 9; }
+    body.swiss .tour .card { grid-column: 9 / 13; }
+    body.swiss .plan-box { border: 1px solid var(--s-text); }
+    body.swiss .legend { font-size: 11px; }
+    body.swiss .keys { gap: 0; margin-top: 20px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); column-gap: 20px; }
+    body.swiss .keys button {
+      border: 0;
+      border-top: 1px solid var(--s-text);
+      padding: 8px 6px;
+    }
+    body.swiss .keys button.shared { border-top-style: dashed; }
+    body.swiss .keys button[aria-pressed="true"],
+    body.swiss .keys button[aria-pressed="true"]:hover { border-top-color: var(--s-peacock); }
+
+    /* room card */
+    body.swiss .card { border-top: 0; padding-top: 0; }
+    body.swiss .card .tag { font-size: 11px; }
+    body.swiss .card p { margin: 0; max-width: 42ch; line-height: 1.5; }
+    body.swiss .card h2 {
+      margin: 6px 0 14px;
+      font-size: clamp(22px, 2vw, 30px);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      text-transform: none;
+    }
+    body.swiss .card h2::before {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 14px;
+      background: var(--lt-active);
+    }
+    body.swiss .card h3 { font-size: 11px; color: var(--s-text); font-weight: 700; margin: 26px 0 8px; }
+    body.swiss .eq { border-top: 1px solid var(--s-text); }
+    body.swiss .eq li { border-bottom: 1px solid var(--s-line); }
+    body.swiss .pill { vertical-align: 4px; }
+    body.swiss .nav2 button { border: 0; border-top: 1px solid var(--s-text); padding: 8px 0 0; font-size: 11px; text-align: left; }
+    body.swiss .nav2 button:last-child { text-align: right; }
+    body.swiss .nav2 button:hover { border-top: 3px solid var(--s-peacock); padding-top: 6px; }
+    body.swiss .noplan { border: 1px dashed var(--s-text); }
+
+    /* ---------- tablets ---------- */
+    @media (max-width: 1000px) {
+      body.swiss header .logo { grid-column: 1 / -1; margin-bottom: 20px; }
+      body.swiss header nav {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      body.swiss main.labtour h1 { grid-column: 1 / -1; margin-bottom: 24px; }
+      body.swiss .intro { grid-column: 1 / 11; margin-top: 0; margin-bottom: 40px; }
+      body.swiss .floors { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      body.swiss .tour .plan,
+      body.swiss .tour .card { grid-column: 1 / -1; }
+    }
+
+    /* ---------- phones ---------- */
+    @media (max-width: 700px) {
+      body.swiss header,
+      body.swiss .grid { padding-left: 20px; padding-right: 20px; }
+      body.swiss header nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      body.swiss main.labtour h1 { font-size: 34px; margin: 32px 0 24px; }
+      body.swiss .intro { grid-column: 1 / -1; }
+      body.swiss .floors { grid-template-columns: 1fr; gap: 12px; }
+      body.swiss footer .left,
+      body.swiss footer .right { grid-column: 1 / -1; }
+      body.swiss footer .right { text-align: left; margin-top: 2px; }
+    }
+</style>
 </head>
-<body>
+<body class="swiss">
+<!-- ===== MENU (same links as every page) ===== -->
 <header>
-  <a class="logo" href="index.html">TN<span class="flip">B</span>L</a>
+  <a class="logo" href="index.html" aria-label="TNBL, home">TN<span class="flip">B</span>L</a>
   <nav>
     <a href="research.html">Research</a>
     <a href="people.html">People</a>
@@ -140,10 +380,14 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
   </nav>
 </header>
 
-<main class="labtour">
-  <h1>Lab tour</h1>
-  <p class="lede">TNBL works across three floors of the CAST building. Pick a floor, then a room, to see what happens there and the equipment it holds.</p>
-  <p class="dim">CAST building, Chieti</p>
+<main class="labtour grid">
+  <div class="rule"></div>
+
+  <h1>Lab tou<span class="flip">r</span></h1>
+  <div class="intro">
+    <p class="lede">TNBL works across three floors of the CAST building. Pick a floor, then a room, to see what happens there.</p>
+    <p class="dim">CAST building, Chieti</p>
+  </div>
 
   <ul class="floors" id="floors" aria-label="Floors"></ul>
 
@@ -161,7 +405,12 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
   </section>
 </main>
 
-<div class="lb" id="lb" hidden><button aria-label="Close" id="lbx">×</button><img id="lbimg" alt=""></div>
+<footer class="grid">
+  <div class="rule"></div>
+  <p class="left">Translational Neurobiology Lab</p>
+  <p class="right">Chieti-Pescara</p>
+</footer>
+
 
 <script>
 /* ######################################################################
@@ -173,6 +422,10 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
    Text always goes between double quotes "like this".
    Keep the commas between entries and between lines.
    After saving, reload the page in the browser to check the result.
+
+   NOTE: this simplified page does not show equipment or photos. The
+   "equipment" and "photos" lists are kept below so they can be shown
+   again later; editing them changes nothing on the page for now.
 
    1. CHANGE A ROOM'S EQUIPMENT (an instrument is added, moved or removed)
       Find the room, then edit its "equipment" list. Each line is
@@ -217,7 +470,7 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
         id     → a unique short name, no spaces (e.g. "imaging")
         floor  → "L3", "L0" or "Lm1"
         box    → only for Level 3 (see point 5); delete the line on other floors
-      Numbers, buttons and the previous/next links update by themselves.
+      Numbers and buttons update by themselves.
       The order of the rooms in the list is the order of the numbers.
 
    7. REMOVE A ROOM
@@ -481,34 +734,11 @@ function show(id){
   const i=rooms.findIndex(r=>r.id===id), r=rooms[i], f=FLOORS.find(x=>x.id===curFloor);
   document.querySelectorAll(".room").forEach(g=>g.classList.toggle("on",g.dataset.id===id));
   document.querySelectorAll(".keys button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.id===id));
-  const slots=(r.photos&&r.photos.length)?r.photos:[null,null,null];
-  const prev=rooms[(i-1+rooms.length)%rooms.length], next=rooms[(i+1)%rooms.length];
   $("#card").innerHTML=`
     <div class="tag">${esc(f.label)} · room ${i+1}</div>
     <h2>${esc(r.name)}<span class="pill ${r.kind}">${r.kind==="own"?"TNBL":"shared"}</span></h2>
-    <p>${esc(r.text)}</p>
-    <h3>Equipment</h3>
-    <ul class="eq">${(r.equipment||[]).map(([a,b])=>`<li><span>${esc(a)}</span><span>${esc(b||"")}</span></li>`).join("")}</ul>
-    <h3>Photos</h3>
-    <div class="photos">${slots.map((p,k)=>`
-      <button class="ph" type="button" data-src="${p?esc(p):""}" aria-label="Photo ${k+1}">
-        ${p?`<img src="${esc(p)}" alt="${esc(r.name)}, photo ${k+1}" loading="lazy">`:""}
-        <span class="ph-empty">photo ${k+1}<br>${p?esc(p.split("/").pop()):"coming soon"}</span>
-      </button>`).join("")}</div>
-    ${rooms.length>1?`<div class="nav2"><button type="button" id="prev">← ${esc(prev.name)}</button><button type="button" id="next">${esc(next.name)} →</button></div>`:""}`;
-  $("#card").querySelectorAll(".ph").forEach(b=>{
-    const img=b.querySelector("img");
-    if(img){img.onload=()=>{b.classList.add("has");b.querySelector(".ph-empty").hidden=true;};img.onerror=()=>img.remove();}
-    b.onclick=()=>{if(b.classList.contains("has"))openLb(b.dataset.src);};
-  });
-  if(rooms.length>1){$("#prev").onclick=()=>show(prev.id);$("#next").onclick=()=>show(next.id);}
+    <p>${esc(r.text)}</p>`;
 }
-
-const lb=$("#lb"),lbimg=$("#lbimg");
-function openLb(src){lbimg.src=src;lb.hidden=false;$("#lbx").focus();}
-function closeLb(){lb.hidden=true;lbimg.src="";}
-lb.onclick=e=>{if(e.target!==lbimg)closeLb();};
-document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!lb.hidden)closeLb();});
 
 setFloor(curFloor);
 
