@@ -11,64 +11,316 @@
   <link rel="stylesheet" href="style.css">
   <script src="menu.js" defer></script>
 
-  <!-- Extra look used only by this page. You normally never need to edit it. -->
+  <!-- =========================================================
+       SWISS RESOURCES PAGE
+       These styles apply to this page only (everything starts
+       with "body.swiss"), so the other pages are not affected.
+       Colours come from style.css; the codes below are only a
+       fallback in case style.css does not load.
+       ========================================================= -->
   <style>
-    .areas {
+    body.swiss {
+      --s-bg:      var(--bg, #ffffff);
+      --s-text:    var(--text, #111111);
+      --s-dim:     var(--dim, #777777);
+      --s-line:    var(--line, #e4e4e4);
+      --s-yellow:  var(--yellow, #e6a817);
+      --s-peacock: var(--peacock, #1f7a8c);
+      --s-sienna:  var(--sienna, #a8401e);
+      --s-violet:  var(--violet, #2d2752);
+
+      margin: 0;
+      padding: 0;
+      max-width: none;
+      background: var(--s-bg);
+      color: var(--s-text);
+      font-family: "Courier Prime", "Courier New", monospace;
+      font-size: 11pt;
+      line-height: 1.4;
+    }
+
+    /* The 12-column grid every block sits on */
+    body.swiss .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 20px;
+      padding: 0 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    /* ---------- header: logo + menu ---------- */
+    body.swiss header {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 20px;
+      align-items: start;
+      padding: 32px 40px 18px;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      border: 0;
+      background: none;
+    }
+    body.swiss header .logo {
+      grid-column: 1 / 4;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--s-text);
+      text-decoration: none;
+    }
+    body.swiss header nav {
+      grid-column: 4 / 13;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      column-gap: 20px;
+      row-gap: 14px;
+    }
+    body.swiss header nav a {
+      color: var(--s-text);
+      text-decoration: none;
+      font-size: 11px;
+      line-height: 1.3;
+      padding-top: 8px;
+      border-top: 1px solid var(--s-text);
+    }
+    body.swiss header nav a:hover,
+    body.swiss header nav a.active {
+      color: var(--s-text);
+      text-decoration: none;
+      border-top: 3px solid var(--s-peacock);
+      padding-top: 6px;
+    }
+
+    /* thick rule under the header, thin rules between themes */
+    body.swiss .rule {
+      grid-column: 1 / -1;
+      height: 0;
+      border-top: 4px solid var(--s-text);
+    }
+
+    /* ---------- page title ---------- */
+    body.swiss main {
+      padding-top: 0;
+      padding-bottom: 0;
+      text-align: left;
+    }
+    body.swiss h1 {
+      grid-column: 1 / 7;
+      margin: 40px 0 64px;
+      font-size: clamp(34px, 4.1vw, 60px);
+      font-weight: 700;
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      text-transform: none;
+    }
+    body.swiss h1::after { display: none; }
+    body.swiss .flip {
+      display: inline-block;
+      transform: scaleX(-1);
+      color: var(--s-peacock);
+    }
+
+    body.swiss h1 { grid-column: 1 / -1; }
+
+    /* ---------- the four area squares ---------- */
+    body.swiss .areas {
+      grid-column: 1 / -1;
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 40px;
+      column-gap: 20px;
+      row-gap: 20px;
+      margin: 0;
+      padding-top: 14px;
+      border-top: 1px solid var(--s-text);
     }
-    .area {
+    body.swiss .area {
+      --tint: var(--s-peacock);
+      position: relative;
       aspect-ratio: 1 / 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 12px;
-      border: 1px solid var(--text);
-      background: var(--bg);
-      color: var(--text);
+      padding: 14px 14px 26px;
+      border: 1px solid var(--s-text);
+      border-radius: 0;
+      background: var(--s-bg);
+      color: var(--s-text);
       font: inherit;
       text-align: left;
       cursor: pointer;
-      transition: box-shadow .3s;
+      box-shadow: none;
     }
-    /* Same effect as the People page: pictures in black and white;
-       with the cursor on a square (or once it is selected) the picture
-       turns to colour and a coloured block appears behind the square. */
-    .area { --tint: var(--peacock); }
-    .area:nth-child(4n+2) { --tint: var(--yellow); }
-    .area:nth-child(4n+3) { --tint: var(--sienna); }
-    .area:nth-child(4n+4) { --tint: var(--violet); }
-    .area:hover, .area:focus-visible, .area.selected { box-shadow: 8px 8px 0 var(--tint); }
-    .area.selected { border-width: 2px; padding: 11px; }
-    .pic { width: 72px; height: 72px; align-self: center; margin: auto 0; display: flex; align-items: center; justify-content: center; }
-    .pic img { max-width: 100%; max-height: 100%; display: block; filter: grayscale(100%); transition: filter .3s; }
-    .area:hover .pic img, .area:focus-visible .pic img, .area.selected .pic img { filter: none; }
-    .pic:empty { border: 1px dashed #bbb; }
-    .area .num, .area .label { font-size: 9pt; line-height: 1.35; }
-    .area .label { min-height: 4.1em; display: flex; align-items: flex-end; }
+    body.swiss .area:nth-child(4n+2) { --tint: var(--s-sienna); }
+    body.swiss .area:nth-child(4n+3) { --tint: var(--s-violet); }
+    body.swiss .area:nth-child(4n+4) { --tint: var(--s-yellow); }
+    /* flat coloured band along the bottom when pointed at or selected */
+    body.swiss .area::after {
+      content: "";
+      position: absolute;
+      left: -1px; right: -1px; bottom: -1px;
+      height: 0;
+      background: var(--tint);
+      transition: height 0.25s;
+    }
+    body.swiss .area:hover::after,
+    body.swiss .area:focus-visible::after { height: 6px; }
+    body.swiss .area.selected::after { height: 12px; }
+    body.swiss .area:hover,
+    body.swiss .area:focus-visible,
+    body.swiss .area.selected { box-shadow: none; }
+    body.swiss .area.selected { border-width: 1px; }
+    body.swiss .area .num {
+      font-size: clamp(22px, 2.4vw, 36px);
+      font-weight: 700;
+      line-height: 1;
+    }
+    body.swiss .pic {
+      width: 38%;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      align-self: center;
+      margin: auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    body.swiss .pic img { max-width: 100%; max-height: 100%; display: block; filter: grayscale(100%); transition: filter .3s; }
+    body.swiss .area:hover .pic img,
+    body.swiss .area:focus-visible .pic img,
+    body.swiss .area.selected .pic img { filter: none; }
+    body.swiss .pic:empty { border: 1px dashed #bbb; }
+    body.swiss .area .label {
+      font-size: 11pt;
+      font-weight: 700;
+      line-height: 1.3;
+      min-height: 2.6em;
+      display: flex;
+      align-items: flex-end;
+    }
 
-    .hint { color: var(--dim); }
-    #members-note { display: none; margin: 0 0 18px; }
-    #res-list li { display: none; }
-    #res-list li.show { display: list-item; }
-    #res-list a { text-decoration: underline; }
-    #res-list .d { display: block; color: var(--dim); font-size: 9pt; }
+    /* ---------- the papers ---------- */
+    body.swiss .papers {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 20px;
+      padding-top: 14px;
+      border-top: 4px solid var(--s-text);
+      margin: 72px 0 56px;
+    }
+    /* left column: name of the selected area */
+    body.swiss .current {
+      grid-column: 1 / 4;
+      margin: 0;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    body.swiss .current::before {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 14px;
+      background: var(--tint, var(--s-line));
+    }
+    body.swiss .papers-right { grid-column: 4 / 13; }
+    body.swiss .hint { margin: 0; color: var(--s-dim); }
+    body.swiss #res-list { list-style: none; margin: 0; padding: 0; }
+    body.swiss #res-list li { display: none; }
+    body.swiss #res-list li.show {
+      display: block;
+      padding: 12px 0;
+      border-top: 1px solid var(--s-line);
+      line-height: 1.5;
+    }
+    body.swiss #res-list li.show:first-child,
+    body.swiss #res-list li.first { border-top: 0; padding-top: 0; }
+    body.swiss #res-list a { text-decoration: underline; color: var(--s-peacock); }
+    body.swiss #res-list b { font-weight: 700; }
 
+    /* ---------- footer ---------- */
+    body.swiss footer.grid {
+      padding-top: 16px;
+      padding-bottom: 32px;
+    }
+    body.swiss footer .rule { border-top-width: 1px; }
+    body.swiss footer p {
+      margin: 10px 0 0;
+      font-size: 11px;
+      color: var(--s-dim);
+    }
+    body.swiss footer .left  { grid-column: 1 / 7; }
+    body.swiss footer .right { grid-column: 7 / 13; text-align: right; }
+
+    /* ---------- tablets ---------- */
+    @media (max-width: 1000px) {
+      body.swiss header .logo { grid-column: 1 / -1; margin-bottom: 20px; }
+      body.swiss header nav {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      body.swiss h1 { grid-column: 1 / -1; margin-bottom: 24px; }
+      body.swiss .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      body.swiss .current { grid-column: 1 / -1; margin-bottom: 20px; }
+      body.swiss .papers-right { grid-column: 1 / -1; }
+    }
+
+    /* ---------- phones: everything in one column ---------- */
     @media (max-width: 700px) {
-      .areas { grid-template-columns: 1fr; gap: 10px; }
-      .area { aspect-ratio: auto; flex-direction: row; justify-content: flex-start; align-items: center; gap: 14px; }
-      .area .label { min-height: 0; }
-      .pic { margin: 0; }
-      .pic { width: 44px; height: 44px; flex: none; order: -1; }
-      .area .num { display: none; }
+      body.swiss header,
+      body.swiss .grid { padding-left: 20px; padding-right: 20px; }
+      body.swiss header nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      body.swiss h1 { font-size: 34px; margin: 32px 0 24px; }
+      body.swiss .areas { grid-template-columns: 1fr; row-gap: 10px; }
+      body.swiss .area { aspect-ratio: auto; flex-direction: row; justify-content: flex-start; align-items: center; gap: 14px; }
+      body.swiss .area .label { min-height: 0; }
+      body.swiss .pic { width: 44px; height: 44px; flex: none; margin: 0; order: -1; }
+      body.swiss .area .num { display: none; }
+      body.swiss .full { margin-bottom: 48px; }
+      body.swiss footer .left,
+      body.swiss footer .right { grid-column: 1 / -1; }
+      body.swiss footer .right { text-align: left; margin-top: 2px; }
+    }
+  
+    /* ---------- resource items ---------- */
+    body.swiss #res-list li.show { padding: 14px 0; }
+    body.swiss #res-list li.first { padding-top: 0; border-top: 0; }
+    body.swiss #res-list a {
+      color: var(--s-text);
+      font-weight: 700;
+      text-decoration: underline;
+      text-decoration-color: var(--tint, var(--s-peacock));
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+    body.swiss #res-list a:hover { color: var(--s-peacock); }
+    body.swiss #res-list .dim { color: var(--s-dim); font-size: 11px; }
+    body.swiss #res-list .d {
+      display: block;
+      margin-top: 4px;
+      color: var(--s-dim);
+      font-size: 11px;
+      line-height: 1.5;
+      max-width: 75ch;
+    }
+    /* members-only note, shown for the first square */
+    body.swiss #members-note {
+      display: none;
+      margin: 0 0 18px;
+      padding: 10px 12px;
+      background: var(--s-yellow);
+      color: var(--s-text);
+      font-size: 11px;
+      line-height: 1.5;
     }
   </style>
 </head>
-<body>
+<body class="swiss">
 
-  <!-- ===== MENU (the same on every page) ===== -->
+  <!-- ===== MENU (same links as every page) ===== -->
   <header>
     <a class="logo" href="index.html" aria-label="TNBL, home">TN<span class="flip">B</span>L</a>
     <nav>
@@ -82,7 +334,9 @@
     </nav>
   </header>
 
-  <main>
+  <main class="grid">
+    <div class="rule"></div>
+
     <h1>Resou<span class="flip">r</span>ces</h1>
 
     <!-- ===== THE FOUR SQUARES =====
@@ -124,90 +378,102 @@
 
     </div>
 
-    <p class="hint" id="hint">Select a square to see its resources.</p>
+    <section class="papers" id="papers">
+      <!-- the name of the selected square appears here by itself -->
+      <p class="current" id="current"></p>
 
-    <!-- Shown only for the "Lab protocols and resources" square -->
-    <p class="dim" id="members-note">Members and invited collaborators only: the links open our shared OneDrive and require sign-in with an authorized email. To request access, write to Alberto.</p>
+      <div class="papers-right">
+        <p class="hint" id="hint">Select a square to see its resources.</p>
 
-    <!-- ===== THE RESOURCES =====
-         ✏️ HOW TO ADD A RESOURCE:
-           1. Copy one whole item from <li ...> to </li>.
-           2. Paste it in the list below, inside the right group.
-           3. Change the title, the link (href="...") and the short description.
-           4. In data-area="..." write which square it belongs to:
-                protocols    = Lab protocols and resources
-                atlases      = Atlases and databases
-                tools        = Useful tools
-                openscience  = Open Science
-         ✏️ HOW TO REMOVE A RESOURCE: delete its whole item from <li ...> to </li>.
-         ✏️ ONEDRIVE: for each protocols item, replace PASTE-ONEDRIVE-LINK-HERE with the
-            OneDrive link (shared with "Specific people", not "Anyone with the link"). -->
-    <ul class="plain" id="res-list">
+        <!-- Shown only for the "Lab protocols and resources" square -->
+        <p class="dim" id="members-note">Members and invited collaborators only: the links open our shared OneDrive and require sign-in with an authorized email. To request access, write to Alberto.</p>
 
-      <!-- ===== 01 · LAB PROTOCOLS AND RESOURCES (members only) ===== -->
-      <li data-area="protocols"><a href="https://universitachieti-my.sharepoint.com/:f:/r/personal/alberto_granzotto_unich_it/Documents/Lab%20MNU%20Bio%20Chapter/Protocols?d=w51403f8694fd47cd933e3c5bfd4ad4d9&csf=1&web=1&e=8x9RRE">Protocols folder</a> <span class="dim">(members)</span>
-        <span class="d">Step-by-step lab protocols.</span></li>
-      <li data-area="protocols"><a href="https://universitachieti-my.sharepoint.com/:f:/r/personal/alberto_granzotto_unich_it/Documents/Lab%20MNU%20Bio%20Chapter/Inventory/General%20items%20inventory?d=w5c2a2ea44dd34ab89bf580376c28f9bb&csf=1&web=1&e=8uG7mE">Reagent inventory</a> <span class="dim">(members)</span>
-        <span class="d">Current stock, lot numbers and storage locations.</span></li>
-      <li data-area="protocols"><a href="https://universitachieti-my.sharepoint.com/:f:/r/personal/alberto_granzotto_unich_it/Documents/Lab%20MNU%20Bio%20Chapter/Inventory/Antibody%20inventory?d=w98da82235e3a4b128c794bc623738d82&csf=1&web=1&e=r242ia">Antibody inventory</a> <span class="dim">(members)</span>
-        <span class="d">Current stock, lot numbers and storage locations.</span></li>
-      <li data-area="protocols"><a href="https://universitachieti-my.sharepoint.com/:f:/r/personal/alberto_granzotto_unich_it/Documents/Lab%20MNU%20Bio%20Chapter/Inventory/iPSC%20lines?d=w474527663dd7475497e178ad300c7d63&csf=1&web=1&e=FPAlOc">Cell line inventory</a> <span class="dim">(members)</span>
-        <span class="d">iPSC lines, differentiation batches and freezer map.</span></li>
-      <li data-area="protocols"><a href="https://cast.agendoscience.com/">Equipment booking and SOPs</a> <span class="dim">(members)</span>
-        <span class="d">Instrument schedules and standard operating procedures.</span></li>
-      <li data-area="protocols"><a href="PASTE-ONEDRIVE-LINK-HERE">Templates and forms</a> <span class="dim">(members; in preparation)</span>
-        <span class="d">Lab notebook templates, ordering forms, onboarding checklist.</span></li>
+        <!-- ===== THE RESOURCES =====
+             ✏️ HOW TO ADD A RESOURCE:
+               1. Copy one whole item from <li ...> to </li>.
+               2. Paste it in the list below, inside the right group.
+               3. Change the title, the link (href="...") and the short description.
+               4. In data-area="..." write which square it belongs to:
+                    protocols    = Lab protocols and resources
+                    atlases      = Atlases and databases
+                    tools        = Useful tools
+                    openscience  = Open Science
+             ✏️ HOW TO REMOVE A RESOURCE: delete its whole item from <li ...> to </li>.
+             ✏️ ONEDRIVE: for each protocols item, replace PASTE-ONEDRIVE-LINK-HERE with the
+                OneDrive link (shared with "Specific people", not "Anyone with the link"). -->
+        <ul class="plain" id="res-list">
 
-      <!-- ===== 02 · ATLASES AND DATABASES ===== -->
-      <li data-area="atlases"><a href="https://labs.gaidi.ca/mouse-brain-atlas/">The mouse brain in stereotaxic coordinates</a>
-        <span class="d">Interactive rat and mouse brain atlases with stereotaxic coordinates. An essential reference for the mouse brain or related species.</span></li>
-      <li data-area="atlases"><a href="https://portal.brain-map.org/">Allen Brain Map</a>
-        <span class="d">Human and mouse brain atlases, including single-cell and spatial transcriptomics.</span></li>
-      <li data-area="atlases"><a href="https://www.proteinatlas.org/">Human Protein Atlas</a>
-        <span class="d">Protein and RNA expression across human tissues, cells and brain regions.</span></li>
-      <li data-area="atlases"><a href="https://www.gtexportal.org/">GTEx Portal</a>
-        <span class="d">Gene expression and regulation across human tissues.</span></li>
-      <li data-area="atlases"><a href="https://brainrnaseq.org/">Brain RNA-Seq</a>
-        <span class="d">Cell-type-specific gene expression in mouse and human brain.</span></li>
-      <li data-area="atlases"><a href="https://www.alzforum.org/mutations">Alzforum Mutations Database</a>
-        <span class="d">Curated variants linked to Alzheimer's disease and other neurodegenerative disorders.</span></li>
+          <!-- ===== 01 · LAB PROTOCOLS AND RESOURCES (members only) ===== -->
+          <li data-area="protocols"><a href="https://universitachieti-my.sharepoint.com/:f:/r/personal/alberto_granzotto_unich_it/Documents/Lab%20MNU%20Bio%20Chapter/Protocols?d=w51403f8694fd47cd933e3c5bfd4ad4d9&csf=1&web=1&e=8x9RRE">Protocols folder</a> <span class="dim">(members)</span>
+            <span class="d">Step-by-step lab protocols.</span></li>
+          <li data-area="protocols"><a href="https://universitachieti-my.sharepoint.com/:f:/r/personal/alberto_granzotto_unich_it/Documents/Lab%20MNU%20Bio%20Chapter/Inventory/General%20items%20inventory?d=w5c2a2ea44dd34ab89bf580376c28f9bb&csf=1&web=1&e=8uG7mE">Reagent inventory</a> <span class="dim">(members)</span>
+            <span class="d">Current stock, lot numbers and storage locations.</span></li>
+          <li data-area="protocols"><a href="https://universitachieti-my.sharepoint.com/:f:/r/personal/alberto_granzotto_unich_it/Documents/Lab%20MNU%20Bio%20Chapter/Inventory/Antibody%20inventory?d=w98da82235e3a4b128c794bc623738d82&csf=1&web=1&e=r242ia">Antibody inventory</a> <span class="dim">(members)</span>
+            <span class="d">Current stock, lot numbers and storage locations.</span></li>
+          <li data-area="protocols"><a href="https://universitachieti-my.sharepoint.com/:f:/r/personal/alberto_granzotto_unich_it/Documents/Lab%20MNU%20Bio%20Chapter/Inventory/iPSC%20lines?d=w474527663dd7475497e178ad300c7d63&csf=1&web=1&e=FPAlOc">Cell line inventory</a> <span class="dim">(members)</span>
+            <span class="d">iPSC lines, differentiation batches and freezer map.</span></li>
+          <li data-area="protocols"><a href="https://cast.agendoscience.com/">Equipment booking and SOPs</a> <span class="dim">(members)</span>
+            <span class="d">Instrument schedules and standard operating procedures.</span></li>
+          <li data-area="protocols"><a href="PASTE-ONEDRIVE-LINK-HERE">Templates and forms</a> <span class="dim">(members; in preparation)</span>
+            <span class="d">Lab notebook templates, ordering forms, onboarding checklist.</span></li>
 
-      <!-- ===== 03 · USEFUL TOOLS ===== -->
-      <li data-area="tools"><a href="https://imagej.net/software/fiji/">Fiji (ImageJ)</a>
-        <span class="d">Open-source platform for microscopy image analysis.</span></li>
-      <li data-area="tools"><a href="https://www.mathworks.com/academia/tah-portal/universita-degli-studi-gabriele-d-annunzio-chieti-pescara-40701104.html">MATLAB & Simulink</a>
-        <span class="d">MATLAB is a computing platform for scientific applications like data analysis, signal and image processing. The lab has access to the institutional Total Academic Headcount (TAH) license. Anyone with a (at)unich.it account can download and install the software. MATLAB is already installed on the lab Windows workstations and can be accessed with your institutional credentials.</span></li>
-      <li data-area="tools"><a href="https://www.originlab.com/">OriginPro</a>
-        <span class="d">Proprietary software for graphing and data analysis. The lab has a OriginPro 2026b license. The software is available on a Windows workstation (ask Alberto for access).</span></li>
-      <li data-area="tools"><a href="https://www.yasara.org/">YASARA</a>
-        <span class="d">YASARA is a molecular-graphics, modeling and simulation program. The lab has a group leader multiple license for YASARA Structure. The software is available on 3 high-end workstations on both Windows and Linux environments.</span></li>
-      <li data-area="tools"><a href="https://www.zotero.org/">Zotero</a>
-        <span class="d">Free reference manager.</span></li>
+          <!-- ===== 02 · ATLASES AND DATABASES ===== -->
+          <li data-area="atlases"><a href="https://labs.gaidi.ca/mouse-brain-atlas/">The mouse brain in stereotaxic coordinates</a>
+            <span class="d">Interactive rat and mouse brain atlases with stereotaxic coordinates. An essential reference for the mouse brain or related species.</span></li>
+          <li data-area="atlases"><a href="https://portal.brain-map.org/">Allen Brain Map</a>
+            <span class="d">Human and mouse brain atlases, including single-cell and spatial transcriptomics.</span></li>
+          <li data-area="atlases"><a href="https://www.proteinatlas.org/">Human Protein Atlas</a>
+            <span class="d">Protein and RNA expression across human tissues, cells and brain regions.</span></li>
+          <li data-area="atlases"><a href="https://www.gtexportal.org/">GTEx Portal</a>
+            <span class="d">Gene expression and regulation across human tissues.</span></li>
+          <li data-area="atlases"><a href="https://brainrnaseq.org/">Brain RNA-Seq</a>
+            <span class="d">Cell-type-specific gene expression in mouse and human brain.</span></li>
+          <li data-area="atlases"><a href="https://www.alzforum.org/mutations">Alzforum Mutations Database</a>
+            <span class="d">Curated variants linked to Alzheimer's disease and other neurodegenerative disorders.</span></li>
+
+          <!-- ===== 03 · USEFUL TOOLS ===== -->
+          <li data-area="tools"><a href="https://imagej.net/software/fiji/">Fiji (ImageJ)</a>
+            <span class="d">Open-source platform for microscopy image analysis.</span></li>
+          <li data-area="tools"><a href="https://www.mathworks.com/academia/tah-portal/universita-degli-studi-gabriele-d-annunzio-chieti-pescara-40701104.html">MATLAB & Simulink</a>
+            <span class="d">MATLAB is a computing platform for scientific applications like data analysis, signal and image processing. The lab has access to the institutional Total Academic Headcount (TAH) license. Anyone with a (at)unich.it account can download and install the software. MATLAB is already installed on the lab Windows workstations and can be accessed with your institutional credentials.</span></li>
+          <li data-area="tools"><a href="https://www.originlab.com/">OriginPro</a>
+            <span class="d">Proprietary software for graphing and data analysis. The lab has a OriginPro 2026b license. The software is available on a Windows workstation (ask Alberto for access).</span></li>
+          <li data-area="tools"><a href="https://www.yasara.org/">YASARA</a>
+            <span class="d">YASARA is a molecular-graphics, modeling and simulation program. The lab has a group leader multiple license for YASARA Structure. The software is available on 3 high-end workstations on both Windows and Linux environments.</span></li>
+          <li data-area="tools"><a href="https://www.zotero.org/">Zotero</a>
+            <span class="d">Free reference manager.</span></li>
 
 
-      <!-- ===== 04 · OPEN SCIENCE ===== -->
-      <li data-area="openscience"><a href="https://osf.io/">Open Science Framework (OSF)</a>
-        <span class="d">Project management, preregistration and data sharing.</span></li>
-      <li data-area="openscience"><a href="https://zenodo.org/">Zenodo</a>
-        <span class="d">Repository for datasets, code and supplementary material, with DOIs.</span></li>
-      <li data-area="openscience"><a href="https://www.biorxiv.org/">bioRxiv</a>
-        <span class="d">Preprint server for biology.</span></li>
-      <li data-area="openscience"><a href="https://www.protocols.io/">protocols.io</a>
-        <span class="d">Open, citable and versioned protocols.</span></li>
-      <li data-area="openscience"><a href="https://www.go-fair.org/fair-principles/">FAIR principles</a>
-        <span class="d">Making data findable, accessible, interoperable and reusable.</span></li>
-      <li data-area="openscience"><a href="https://arriveguidelines.org/">ARRIVE guidelines</a>
-        <span class="d">Reporting standards for animal research.</span></li>
-      <li data-area="openscience"><a href="https://nc3rs.org.uk/">NC3Rs</a>
-        <span class="d">Replacement, reduction and refinement in animal research.</span></li>
-      <li data-area="openscience"><a href="https://sfdora.org/">DORA</a>
-        <span class="d">Declaration on Research Assessment: evaluating research on its merits.</span></li>
-      <li data-area="openscience"><a href="https://v2.sherpa.ac.uk/romeo/">Sherpa Romeo</a>
-        <span class="d">Journal open-access and self-archiving policies.</span></li>
+          <!-- ===== 04 · OPEN SCIENCE ===== -->
+          <li data-area="openscience"><a href="https://osf.io/">Open Science Framework (OSF)</a>
+            <span class="d">Project management, preregistration and data sharing.</span></li>
+          <li data-area="openscience"><a href="https://zenodo.org/">Zenodo</a>
+            <span class="d">Repository for datasets, code and supplementary material, with DOIs.</span></li>
+          <li data-area="openscience"><a href="https://www.biorxiv.org/">bioRxiv</a>
+            <span class="d">Preprint server for biology.</span></li>
+          <li data-area="openscience"><a href="https://www.protocols.io/">protocols.io</a>
+            <span class="d">Open, citable and versioned protocols.</span></li>
+          <li data-area="openscience"><a href="https://www.go-fair.org/fair-principles/">FAIR principles</a>
+            <span class="d">Making data findable, accessible, interoperable and reusable.</span></li>
+          <li data-area="openscience"><a href="https://arriveguidelines.org/">ARRIVE guidelines</a>
+            <span class="d">Reporting standards for animal research.</span></li>
+          <li data-area="openscience"><a href="https://nc3rs.org.uk/">NC3Rs</a>
+            <span class="d">Replacement, reduction and refinement in animal research.</span></li>
+          <li data-area="openscience"><a href="https://sfdora.org/">DORA</a>
+            <span class="d">Declaration on Research Assessment: evaluating research on its merits.</span></li>
+          <li data-area="openscience"><a href="https://v2.sherpa.ac.uk/romeo/">Sherpa Romeo</a>
+            <span class="d">Journal open-access and self-archiving policies.</span></li>
 
-    </ul>
-
+        </ul>
+      </div>
+    </section>
   </main>
+
+  <footer class="grid">
+    <div class="rule"></div>
+    <p class="left">Translational Neurobiology Lab</p>
+    <p class="right">Chieti-Pescara</p>
+  </footer>
 
   <!-- Makes the squares work. You never need to edit this. -->
   <script>
@@ -215,15 +481,23 @@
     var items = document.querySelectorAll("#res-list li");
     var hint = document.getElementById("hint");
     var note = document.getElementById("members-note");
+    var current = document.getElementById("current");
+    var box = document.getElementById("papers");
 
     squares.forEach(function (sq) {
       sq.addEventListener("click", function () {
         var area = sq.getAttribute("data-area");
         squares.forEach(function (s) { s.classList.toggle("selected", s === sq); });
+
+        // name and colour of the selected square, in the left column
+        current.textContent = sq.querySelector(".label").textContent;
+        box.style.setProperty("--tint", getComputedStyle(sq).getPropertyValue("--tint"));
+
         var count = 0;
         items.forEach(function (p) {
           var match = p.getAttribute("data-area").split(" ").indexOf(area) !== -1;
           p.classList.toggle("show", match);
+          p.classList.toggle("first", match && count === 0);
           if (match) count++;
         });
         note.style.display = area === "protocols" ? "block" : "none";
