@@ -11,66 +11,315 @@
   <link rel="stylesheet" href="style.css">
   <script src="menu.js" defer></script>
 
-  <!-- Extra look used only by this page. You normally never need to edit it. -->
+  <!-- =========================================================
+       SWISS PUBLICATIONS PAGE
+       These styles apply to this page only (everything starts
+       with "body.swiss"), so the other pages are not affected.
+       Colours come from style.css; the codes below are only a
+       fallback in case style.css does not load.
+       ========================================================= -->
   <style>
-    .quote { font-style: italic; font-size: 9pt; margin: 0 0 6px; }
-    .quote-source { color: var(--dim); font-size: 9pt; margin: 0 0 40px; }
-    .quote-source a { text-decoration: underline; }
+    body.swiss {
+      --s-bg:      var(--bg, #ffffff);
+      --s-text:    var(--text, #111111);
+      --s-dim:     var(--dim, #777777);
+      --s-line:    var(--line, #e4e4e4);
+      --s-yellow:  var(--yellow, #e6a817);
+      --s-peacock: var(--peacock, #1f7a8c);
+      --s-sienna:  var(--sienna, #a8401e);
+      --s-violet:  var(--violet, #2d2752);
 
-    .areas {
+      margin: 0;
+      padding: 0;
+      max-width: none;
+      background: var(--s-bg);
+      color: var(--s-text);
+      font-family: "Courier Prime", "Courier New", monospace;
+      font-size: 11pt;
+      line-height: 1.4;
+    }
+
+    /* The 12-column grid every block sits on */
+    body.swiss .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 20px;
+      padding: 0 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    /* ---------- header: logo + menu ---------- */
+    body.swiss header {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 20px;
+      align-items: start;
+      padding: 32px 40px 18px;
+      max-width: 1400px;
+      margin: 0 auto;
+      box-sizing: border-box;
+      border: 0;
+      background: none;
+    }
+    body.swiss header .logo {
+      grid-column: 1 / 4;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--s-text);
+      text-decoration: none;
+    }
+    body.swiss header nav {
+      grid-column: 4 / 13;
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      column-gap: 20px;
+      row-gap: 14px;
+    }
+    body.swiss header nav a {
+      color: var(--s-text);
+      text-decoration: none;
+      font-size: 11px;
+      line-height: 1.3;
+      padding-top: 8px;
+      border-top: 1px solid var(--s-text);
+    }
+    body.swiss header nav a:hover,
+    body.swiss header nav a.active {
+      color: var(--s-text);
+      text-decoration: none;
+      border-top: 3px solid var(--s-peacock);
+      padding-top: 6px;
+    }
+
+    /* thick rule under the header, thin rules between themes */
+    body.swiss .rule {
+      grid-column: 1 / -1;
+      height: 0;
+      border-top: 4px solid var(--s-text);
+    }
+
+    /* ---------- page title ---------- */
+    body.swiss main {
+      padding-top: 0;
+      padding-bottom: 0;
+      text-align: left;
+    }
+    body.swiss h1 {
+      grid-column: 1 / 7;
+      margin: 40px 0 64px;
+      font-size: clamp(34px, 4.1vw, 60px);
+      font-weight: 700;
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+      text-transform: none;
+    }
+    body.swiss h1::after { display: none; }
+    body.swiss .flip {
+      display: inline-block;
+      transform: scaleX(-1);
+      color: var(--s-peacock);
+    }
+
+    /* ---------- quote, next to the title ---------- */
+    body.swiss h1 { grid-column: 1 / 6; }
+    body.swiss .quotebox {
+      grid-column: 7 / 13;
+      margin: 46px 0 64px;
+      padding-left: 16px;
+      border-left: 4px solid var(--s-yellow);
+    }
+    body.swiss .quote {
+      margin: 0 0 10px;
+      font-style: italic;
+      font-size: 13pt;
+      line-height: 1.35;
+    }
+    body.swiss .quote-source {
+      margin: 0;
+      font-size: 11px;
+      color: var(--s-dim);
+    }
+    body.swiss .quote-source a { color: var(--s-text); text-decoration: underline; }
+
+    /* ---------- the four area squares ---------- */
+    body.swiss .areas {
+      grid-column: 1 / -1;
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 40px;
+      column-gap: 20px;
+      row-gap: 20px;
+      margin: 0;
+      padding-top: 14px;
+      border-top: 1px solid var(--s-text);
     }
-    .area {
+    body.swiss .area {
+      --tint: var(--s-peacock);
+      position: relative;
       aspect-ratio: 1 / 1;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 12px;
-      border: 1px solid var(--text);
-      background: var(--bg);
-      color: var(--text);
+      padding: 14px 14px 26px;
+      border: 1px solid var(--s-text);
+      border-radius: 0;
+      background: var(--s-bg);
+      color: var(--s-text);
       font: inherit;
       text-align: left;
       cursor: pointer;
-      transition: box-shadow .3s;
+      box-shadow: none;
     }
-    /* Same effect as the People page: pictures in black and white;
-       with the cursor on a square (or once it is selected) the picture
-       turns to colour and a coloured block appears behind the square. */
-    .area { --tint: var(--peacock); }
-    .area:nth-child(4n+2) { --tint: var(--yellow); }
-    .area:nth-child(4n+3) { --tint: var(--sienna); }
-    .area:nth-child(4n+4) { --tint: var(--violet); }
-    .area:hover, .area:focus-visible, .area.selected { box-shadow: 8px 8px 0 var(--tint); }
-    .area.selected { border-width: 2px; padding: 11px; }
-    .pic { width: 72px; height: 72px; align-self: center; margin: auto 0; display: flex; align-items: center; justify-content: center; }
-    .pic img { max-width: 100%; max-height: 100%; display: block; filter: grayscale(100%); transition: filter .3s; }
-    .area:hover .pic img, .area:focus-visible .pic img, .area.selected .pic img { filter: none; }
-    .pic:empty { border: 1px dashed #bbb; }
-    .area .num, .area .label { font-size: 9pt; line-height: 1.35; }
-    .area .label { min-height: 4.1em; display: flex; align-items: flex-end; }
+    body.swiss .area:nth-child(4n+2) { --tint: var(--s-sienna); }
+    body.swiss .area:nth-child(4n+3) { --tint: var(--s-violet); }
+    body.swiss .area:nth-child(4n+4) { --tint: var(--s-yellow); }
+    /* flat coloured band along the bottom when pointed at or selected */
+    body.swiss .area::after {
+      content: "";
+      position: absolute;
+      left: -1px; right: -1px; bottom: -1px;
+      height: 0;
+      background: var(--tint);
+      transition: height 0.25s;
+    }
+    body.swiss .area:hover::after,
+    body.swiss .area:focus-visible::after { height: 6px; }
+    body.swiss .area.selected::after { height: 12px; }
+    body.swiss .area:hover,
+    body.swiss .area:focus-visible,
+    body.swiss .area.selected { box-shadow: none; }
+    body.swiss .area.selected { border-width: 1px; }
+    body.swiss .area .num {
+      font-size: clamp(22px, 2.4vw, 36px);
+      font-weight: 700;
+      line-height: 1;
+    }
+    body.swiss .pic {
+      width: 38%;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      align-self: center;
+      margin: auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    body.swiss .pic img { max-width: 100%; max-height: 100%; display: block; filter: grayscale(100%); transition: filter .3s; }
+    body.swiss .area:hover .pic img,
+    body.swiss .area:focus-visible .pic img,
+    body.swiss .area.selected .pic img { filter: none; }
+    body.swiss .pic:empty { border: 1px dashed #bbb; }
+    body.swiss .area .label {
+      font-size: 11pt;
+      font-weight: 700;
+      line-height: 1.3;
+      min-height: 2.6em;
+      display: flex;
+      align-items: flex-end;
+    }
 
-    .hint { color: var(--dim); }
-    #pub-list li { display: none; }
-    #pub-list li.show { display: list-item; }
-    #pub-list a { text-decoration: underline; }
+    /* ---------- links to ORCID / Scholar ---------- */
+    body.swiss .full {
+      grid-column: 1 / -1;
+      margin: 14px 0 72px;
+      font-size: 11px;
+      color: var(--s-dim);
+    }
+    body.swiss .full a { color: var(--s-text); text-decoration: underline; }
 
+    /* ---------- the papers ---------- */
+    body.swiss .papers {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: 20px;
+      padding-top: 14px;
+      border-top: 4px solid var(--s-text);
+      margin-bottom: 56px;
+    }
+    /* left column: name of the selected area */
+    body.swiss .current {
+      grid-column: 1 / 4;
+      margin: 0;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+    body.swiss .current::before {
+      content: "";
+      display: block;
+      width: 24px;
+      height: 24px;
+      margin-bottom: 14px;
+      background: var(--tint, var(--s-line));
+    }
+    body.swiss .papers-right { grid-column: 4 / 13; }
+    body.swiss .hint { margin: 0; color: var(--s-dim); }
+    body.swiss #pub-list { list-style: none; margin: 0; padding: 0; }
+    body.swiss #pub-list li { display: none; }
+    body.swiss #pub-list li.show {
+      display: block;
+      padding: 12px 0;
+      border-top: 1px solid var(--s-line);
+      line-height: 1.5;
+    }
+    body.swiss #pub-list li.show:first-child,
+    body.swiss #pub-list li.first { border-top: 0; padding-top: 0; }
+    body.swiss #pub-list a { text-decoration: underline; color: var(--s-peacock); }
+    body.swiss #pub-list b { font-weight: 700; }
+
+    /* ---------- footer ---------- */
+    body.swiss footer.grid {
+      padding-top: 16px;
+      padding-bottom: 32px;
+    }
+    body.swiss footer .rule { border-top-width: 1px; }
+    body.swiss footer p {
+      margin: 10px 0 0;
+      font-size: 11px;
+      color: var(--s-dim);
+    }
+    body.swiss footer .left  { grid-column: 1 / 7; }
+    body.swiss footer .right { grid-column: 7 / 13; text-align: right; }
+
+    /* ---------- tablets ---------- */
+    @media (max-width: 1000px) {
+      body.swiss header .logo { grid-column: 1 / -1; margin-bottom: 20px; }
+      body.swiss header nav {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+      body.swiss h1 { grid-column: 1 / -1; margin-bottom: 24px; }
+      body.swiss .quotebox { grid-column: 1 / 11; margin-top: 0; margin-bottom: 48px; }
+      body.swiss .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      body.swiss .current { grid-column: 1 / -1; margin-bottom: 20px; }
+      body.swiss .papers-right { grid-column: 1 / -1; }
+    }
+
+    /* ---------- phones: everything in one column ---------- */
     @media (max-width: 700px) {
-      .areas { grid-template-columns: 1fr; gap: 10px; }
-      .area { aspect-ratio: auto; flex-direction: row; justify-content: flex-start; align-items: center; gap: 14px; }
-      .area .label { min-height: 0; }
-      .pic { margin: 0; }
-      .pic { width: 44px; height: 44px; flex: none; order: -1; }
-      .area .num { display: none; }
+      body.swiss header,
+      body.swiss .grid { padding-left: 20px; padding-right: 20px; }
+      body.swiss header nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      body.swiss h1 { font-size: 34px; margin: 32px 0 24px; }
+      body.swiss .quotebox { grid-column: 1 / -1; }
+      body.swiss .quote { font-size: 11pt; }
+      body.swiss .areas { grid-template-columns: 1fr; row-gap: 10px; }
+      body.swiss .area { aspect-ratio: auto; flex-direction: row; justify-content: flex-start; align-items: center; gap: 14px; }
+      body.swiss .area .label { min-height: 0; }
+      body.swiss .pic { width: 44px; height: 44px; flex: none; margin: 0; order: -1; }
+      body.swiss .area .num { display: none; }
+      body.swiss .full { margin-bottom: 48px; }
+      body.swiss footer .left,
+      body.swiss footer .right { grid-column: 1 / -1; }
+      body.swiss footer .right { text-align: left; margin-top: 2px; }
     }
   </style>
 </head>
-<body>
+<body class="swiss">
 
-  <!-- ===== MENU (the same on every page) ===== -->
+  <!-- ===== MENU (same links as every page) ===== -->
   <header>
     <a class="logo" href="index.html" aria-label="TNBL, home">TN<span class="flip">B</span>L</a>
     <nav>
@@ -84,13 +333,17 @@
     </nav>
   </header>
 
-  <main>
+  <main class="grid">
+    <div class="rule"></div>
+
     <h1>Pu<span class="flip">b</span>lications</h1>
 
-    <p class="quote">“Never before in the history of humanity have so many written so much while having so little to say to so few.”</p>
-    <p class="quote-source">Alvesson M, Gabriel Y, Paulsen R. <em>Return to Meaning: A Social Science with Something to Say</em>. Oxford University Press, 2017. <a href="https://doi.org/10.1093/oso/9780198787099.001.0001">doi</a></p>
+    <div class="quotebox">
+      <p class="quote">“Never before in the history of humanity have so many written so much while having so little to say to so few.”</p>
+      <p class="quote-source">Alvesson M, Gabriel Y, Paulsen R. <em>Return to Meaning: A Social Science with Something to Say</em>. Oxford University Press, 2017. <a href="https://doi.org/10.1093/oso/9780198787099.001.0001">doi</a></p>
+    </div>
 
-    <!-- ===== THE THREE SQUARES =====
+    <!-- ===== THE FOUR SQUARES =====
          ✏️ You can change the text of a square between <span class="label"> and </span>.
          ✏️ PICTURES: upload a square image (PNG with transparent background works best,
             about 300 × 300 pixels) into the "images" folder, named area1.png, area2.png,
@@ -130,67 +383,87 @@
     </div>
 
     <!-- Link to the complete track record -->
-    <p class="dim" style="margin:-16px 0 32px">Full list on <a href="https://orcid.org/0000-0001-9181-4373"><u>ORCID</u></a> and <a href="https://scholar.google.com/citations?user=7M6rWLQAAAAJ&amp;hl=en"><u>Google Scholar</u></a>.</p>
+    <p class="full">Full list on <a href="https://orcid.org/0000-0001-9181-4373">ORCID</a> and <a href="https://scholar.google.com/citations?user=7M6rWLQAAAAJ&amp;hl=en">Google Scholar</a>.</p>
 
-    <p class="hint" id="hint">Select an area to see its publications.</p>
+    <section class="papers" id="papers">
+      <!-- the name of the selected area appears here by itself -->
+      <p class="current" id="current"></p>
 
-    <!-- ===== THE PAPERS =====
-         ✏️ HOW TO ADD A PAPER:
-           1. Copy one whole line from <li ...> to </li>.
-           2. Paste it in the list below. Keep the newest papers at the top.
-           3. Change authors, title, journal, year, and put the DOI after https://doi.org/
-           4. In data-area="..." write which area(s) the paper belongs to:
-                ipsc        = iPSC models of neurodegeneration
-                zinc        = Keep zinkin', role of zinc in the CNS
-                resilience  = Mechanisms of neuronal resilience
-                reviews     = Reviews and dementia controversies
-              For a paper in two areas, write both, separated by a space,
-              e.g.  data-area="zinc resilience"
-         ✏️ HOW TO REMOVE A PAPER: delete its whole line from <li ...> to </li>.
-         Text between <b> and </b> is bold; between <em> and </em> is italic. -->
-    <ul class="plain" id="pub-list">
+      <div class="papers-right">
+        <p class="hint" id="hint">Select an area to see its publications.</p>
 
-      <!-- ✏️ CHECK journal, year and DOI -->
-      <li data-area="ipsc"><b>Granzotto A</b>, McQuade A, Chadarevian JP, et al. ER and SOCE Ca<sup>2+</sup> signals are not required for directed cell migration in human iPSC-derived microglia. <em>Cell Calcium</em>, 2024. <a href="https://doi.org/10.1016/j.ceca.2024.102923">doi</a></li>
-      <li data-area="ipsc">Jairaman A, McQuade A, <b>Granzotto A</b>, et al. TREM2 regulates purinergic receptor-mediated calcium signaling and motility in human iPSC-derived microglia. <em>eLife</em>, 2022. <a href="https://doi.org/10.7554/eLife.73021">doi</a></li>
-  
-      <!-- ✏️ CHECK journal and DOI -->
-      <li data-area="resilience"><b>Granzotto A</b>, d’Aurora M, Bomba M, Gatta V, Onofrj M, Sensi SL. Long-Term Dynamic Changes of NMDA Receptors Following an Excitotoxic Challenge. <em>Cells</em> 2022. <a href="https://doi.org/10.3390/cells11050911">doi</a></li>
-      <li data-area="resilience"><b>Granzotto A</b>, Canzoniero LMT, Sensi SL. A neurotoxic ménage-à-trois: glutamate, calcium, and zinc in the excitotoxic cascade. <em>Front Mol Neurosci</em> 2020. <a href="https://doi.org/10.3389/FNMOL.2020.600089">doi</a></li>
-      <li data-area="resilience"><b>Granzotto A</b>, Sensi SL. Intracellular zinc is a critical intermediate in the excitotoxic cascade. <em>Neurobiol Dis</em> 2015. <a href="https://doi.org/10.1016/j.nbd.2015.04.010">doi</a></li>
-      <li data-area="resilience">Canzoniero LMT, <b>Granzotto A</b>, Turetsky DM, Choi DW, Dugan LL, Sensi SL. nNOS(+) striatal neurons, a subpopulation spared in Huntington’s Disease, possess functional NMDA receptors but fail to generate mitochondrial ROS in response to an excitotoxic challenge. <em>Front Physiol</em> 2013. <a href="https://doi.org/10.3389/fphys.2013.00112">doi</a></li>
+        <!-- ===== THE PAPERS =====
+             ✏️ HOW TO ADD A PAPER:
+               1. Copy one whole line from <li ...> to </li>.
+               2. Paste it in the list below. Keep the newest papers at the top.
+               3. Change authors, title, journal, year, and put the DOI after https://doi.org/
+               4. In data-area="..." write which area(s) the paper belongs to:
+                    ipsc        = iPSC models of neurodegeneration
+                    zinc        = Keep zinkin', role of zinc in the CNS
+                    resilience  = Mechanisms of neuronal resilience
+                    reviews     = Reviews and dementia controversies
+                  For a paper in two areas, write both, separated by a space,
+                  e.g.  data-area="zinc resilience"
+             ✏️ HOW TO REMOVE A PAPER: delete its whole line from <li ...> to </li>.
+             Text between <b> and </b> is bold; between <em> and </em> is italic. -->
+        <ul class="plain" id="pub-list">
 
-      <li data-area="zinc">Squitti R, Benussi A, Fostinelli S, et al. Zinc therapy in mild cognitive impairment: cognitive stabilization in pharmacodynamically responsive patients in the ZINCAiD trial. <em>Biomolecules</em> 2025. <a href="https://doi.org/10.3390/biom15091268">doi</a></li>
-      <li data-area="zinc">Avan A, Członkowska A, Gaskin S, <b>Granzotto A</b>, Sensi SL, Hoogenraad TU. The Role of Zinc in the Treatment of Wilson’s Disease. <em>Int J Mol Sci</em> 2022. <a href="https://doi.org/10.3390/ijms23169316">doi</a></li>
-      <li data-area="zinc"><b>Granzotto A</b>, Canzoniero LMT, Sensi SL. A neurotoxic ménage-à-trois: glutamate, calcium, and zinc in the excitotoxic cascade. <em>Front Mol Neurosci</em> 2020. <a href="https://doi.org/10.3389/FNMOL.2020.600089">doi</a></li>
-      <li data-area="zinc">Sensi SL, <b>Granzotto A</b>, Siotto M, Squitti R. Copper and Zinc Dysregulation in Alzheimer’s Disease. <em>Trends Pharmacol Sci</em> 2018. <a href="https://doi.org/10.1016/j.tips.2018.10.001">doi</a></li>
-      <li data-area="zinc">Frazzini V, <b>Granzotto A</b>, Bomba M, et al. The pharmacological perturbation of brain zinc impairs BDNF-related signaling and the cognitive performances of young mice. <em>Sci Rep</em> 2018. <a href="https://doi.org/10.1038/s41598-018-28083-9">doi</a></li>
-      <li data-area="zinc"><b>Granzotto A</b>, Sensi SL. Intracellular zinc is a critical intermediate in the excitotoxic cascade. <em>Neurobiol Dis</em> 2015. <a href="https://doi.org/10.1016/j.nbd.2015.04.010">doi</a></li>
+          <!-- ✏️ CHECK journal, year and DOI -->
+          <li data-area="ipsc"><b>Granzotto A</b>, McQuade A, Chadarevian JP, et al. ER and SOCE Ca<sup>2+</sup> signals are not required for directed cell migration in human iPSC-derived microglia. <em>Cell Calcium</em>, 2024. <a href="https://doi.org/10.1016/j.ceca.2024.102923">doi</a></li>
+          <li data-area="ipsc">Jairaman A, McQuade A, <b>Granzotto A</b>, et al. TREM2 regulates purinergic receptor-mediated calcium signaling and motility in human iPSC-derived microglia. <em>eLife</em>, 2022. <a href="https://doi.org/10.7554/eLife.73021">doi</a></li>
 
-      <li data-area="reviews"><b>Granzotto A</b>, Vissel B, Sensi SL. Lost in translation: Inconvenient truths on the utility of mouse models in Alzheimer’s disease research. <em>eLife</em> 2024. <a href="https://doi.org/10.7554/eLife.90633">doi</a></li>
-      <li data-area="reviews"><b>Granzotto A</b>, Sensi SL. Once upon a time, the Amyloid Cascade Hypothesis. <em>Ageing Res Rev</em> 2024. <a href="https://doi.org/10.1016/j.arr.2023.102161">doi</a></li>
-      <li data-area="reviews">Delli Pizzi S, <b>Granzotto A</b>, Bomba M, Frazzini V, Onofrj M, Sensi SL. Acting Before; A Combined Strategy to Counteract the Onset and Progression of Dementia. Curr Alzheimer Res. 2020;17(9):790-804.</li>
-      <li data-area="reviews"><b>Granzotto A</b>, Sensi SL. Minocycline-A Lesson from a Failure. <em>JAMA Neurol</em> 2020. <a href="https://doi.org/10.1001/jamaneurol.2020.1154">doi</a></li>
-      <li data-area="reviews"><b>Granzotto A</b>, Zatta P. Resveratrol and Alzheimer’s disease: Message in a bottle on red wine and cognition. <em>Front Aging Neurosci</em> 2014. <a href="https://doi.org/10.3389/fnagi.2014.00095">doi</a></li> 
+          <!-- ✏️ CHECK journal and DOI -->
+          <li data-area="resilience"><b>Granzotto A</b>, d’Aurora M, Bomba M, Gatta V, Onofrj M, Sensi SL. Long-Term Dynamic Changes of NMDA Receptors Following an Excitotoxic Challenge. <em>Cells</em> 2022. <a href="https://doi.org/10.3390/cells11050911">doi</a></li>
+          <li data-area="resilience"><b>Granzotto A</b>, Canzoniero LMT, Sensi SL. A neurotoxic ménage-à-trois: glutamate, calcium, and zinc in the excitotoxic cascade. <em>Front Mol Neurosci</em> 2020. <a href="https://doi.org/10.3389/FNMOL.2020.600089">doi</a></li>
+          <li data-area="resilience"><b>Granzotto A</b>, Sensi SL. Intracellular zinc is a critical intermediate in the excitotoxic cascade. <em>Neurobiol Dis</em> 2015. <a href="https://doi.org/10.1016/j.nbd.2015.04.010">doi</a></li>
+          <li data-area="resilience">Canzoniero LMT, <b>Granzotto A</b>, Turetsky DM, Choi DW, Dugan LL, Sensi SL. nNOS(+) striatal neurons, a subpopulation spared in Huntington’s Disease, possess functional NMDA receptors but fail to generate mitochondrial ROS in response to an excitotoxic challenge. <em>Front Physiol</em> 2013. <a href="https://doi.org/10.3389/fphys.2013.00112">doi</a></li>
 
-    </ul>
+          <li data-area="zinc">Squitti R, Benussi A, Fostinelli S, et al. Zinc therapy in mild cognitive impairment: cognitive stabilization in pharmacodynamically responsive patients in the ZINCAiD trial. <em>Biomolecules</em> 2025. <a href="https://doi.org/10.3390/biom15091268">doi</a></li>
+          <li data-area="zinc">Avan A, Członkowska A, Gaskin S, <b>Granzotto A</b>, Sensi SL, Hoogenraad TU. The Role of Zinc in the Treatment of Wilson’s Disease. <em>Int J Mol Sci</em> 2022. <a href="https://doi.org/10.3390/ijms23169316">doi</a></li>
+          <li data-area="zinc"><b>Granzotto A</b>, Canzoniero LMT, Sensi SL. A neurotoxic ménage-à-trois: glutamate, calcium, and zinc in the excitotoxic cascade. <em>Front Mol Neurosci</em> 2020. <a href="https://doi.org/10.3389/FNMOL.2020.600089">doi</a></li>
+          <li data-area="zinc">Sensi SL, <b>Granzotto A</b>, Siotto M, Squitti R. Copper and Zinc Dysregulation in Alzheimer’s Disease. <em>Trends Pharmacol Sci</em> 2018. <a href="https://doi.org/10.1016/j.tips.2018.10.001">doi</a></li>
+          <li data-area="zinc">Frazzini V, <b>Granzotto A</b>, Bomba M, et al. The pharmacological perturbation of brain zinc impairs BDNF-related signaling and the cognitive performances of young mice. <em>Sci Rep</em> 2018. <a href="https://doi.org/10.1038/s41598-018-28083-9">doi</a></li>
+          <li data-area="zinc"><b>Granzotto A</b>, Sensi SL. Intracellular zinc is a critical intermediate in the excitotoxic cascade. <em>Neurobiol Dis</em> 2015. <a href="https://doi.org/10.1016/j.nbd.2015.04.010">doi</a></li>
 
+          <li data-area="reviews"><b>Granzotto A</b>, Vissel B, Sensi SL. Lost in translation: Inconvenient truths on the utility of mouse models in Alzheimer’s disease research. <em>eLife</em> 2024. <a href="https://doi.org/10.7554/eLife.90633">doi</a></li>
+          <li data-area="reviews"><b>Granzotto A</b>, Sensi SL. Once upon a time, the Amyloid Cascade Hypothesis. <em>Ageing Res Rev</em> 2024. <a href="https://doi.org/10.1016/j.arr.2023.102161">doi</a></li>
+          <li data-area="reviews">Delli Pizzi S, <b>Granzotto A</b>, Bomba M, Frazzini V, Onofrj M, Sensi SL. Acting Before; A Combined Strategy to Counteract the Onset and Progression of Dementia. Curr Alzheimer Res. 2020;17(9):790-804.</li>
+          <li data-area="reviews"><b>Granzotto A</b>, Sensi SL. Minocycline-A Lesson from a Failure. <em>JAMA Neurol</em> 2020. <a href="https://doi.org/10.1001/jamaneurol.2020.1154">doi</a></li>
+          <li data-area="reviews"><b>Granzotto A</b>, Zatta P. Resveratrol and Alzheimer’s disease: Message in a bottle on red wine and cognition. <em>Front Aging Neurosci</em> 2014. <a href="https://doi.org/10.3389/fnagi.2014.00095">doi</a></li>
+
+        </ul>
+      </div>
+    </section>
   </main>
+
+  <footer class="grid">
+    <div class="rule"></div>
+    <p class="left">Translational Neurobiology Lab</p>
+    <p class="right">Chieti-Pescara</p>
+  </footer>
 
   <!-- Makes the squares work. You never need to edit this. -->
   <script>
     var squares = document.querySelectorAll(".area");
     var papers = document.querySelectorAll("#pub-list li");
     var hint = document.getElementById("hint");
+    var current = document.getElementById("current");
+    var box = document.getElementById("papers");
 
     squares.forEach(function (sq) {
       sq.addEventListener("click", function () {
         var area = sq.getAttribute("data-area");
         squares.forEach(function (s) { s.classList.toggle("selected", s === sq); });
+
+        // name and colour of the selected area, in the left column
+        current.textContent = sq.querySelector(".label").textContent;
+        box.style.setProperty("--tint", getComputedStyle(sq).getPropertyValue("--tint"));
+
         var count = 0;
         papers.forEach(function (p) {
           var match = p.getAttribute("data-area").split(" ").indexOf(area) !== -1;
           p.classList.toggle("show", match);
+          p.classList.toggle("first", match && count === 0);
           if (match) count++;
         });
         hint.style.display = count ? "none" : "block";
