@@ -29,13 +29,23 @@
       --s-sienna:  var(--sienna, #a8401e);
       --s-violet:  var(--violet, #2d2752);
 
+      /* ===== TEXT SIZES — the same on every page =====
+         Change a value here to change it on this page; keep the
+         eight pages identical so the site stays consistent. */
+      --fs-title: clamp(24px, 2.9vw, 42px);  /* page title */
+      --fs-head:  clamp(19px, 2.1vw, 30px);  /* section heading: years, Alumni, theme numbers */
+      --fs-sub:   clamp(15px, 1.6vw, 22px);  /* small heading: square numbers, floors, room names */
+      --fs-quote: 10pt;                      /* quotes */
+      --fs-body:  9pt;                       /* main text */
+      --fs-small: 8pt;                       /* menu, dates, captions, footer */
+
       margin: 0;
       padding: 0;
       max-width: none;
       background: var(--s-bg);
       color: var(--s-text);
       font-family: "Courier Prime", "Courier New", monospace;
-      font-size: 11pt;
+      font-size: var(--fs-body);
       line-height: 1.4;
     }
 
@@ -65,7 +75,7 @@
     }
     body.swiss header .logo {
       grid-column: 1 / 4;
-      font-size: 11pt;
+      font-size: var(--fs-body);
       font-weight: 700;
       letter-spacing: 0.08em;
       color: var(--s-text);
@@ -81,7 +91,7 @@
     body.swiss header nav a {
       color: var(--s-text);
       text-decoration: none;
-      font-size: 11px;
+      font-size: var(--fs-small);
       line-height: 1.3;
       padding-top: 8px;
       border-top: 1px solid var(--s-text);
@@ -98,7 +108,7 @@
     body.swiss .rule {
       grid-column: 1 / -1;
       height: 0;
-      border-top: 4px solid var(--s-text);
+      border-top: 3px solid var(--s-text);
     }
 
     /* ---------- page title ---------- */
@@ -109,8 +119,8 @@
     }
     body.swiss h1 {
       grid-column: 1 / 7;
-      margin: 40px 0 64px;
-      font-size: clamp(34px, 4.1vw, 60px);
+      margin: 28px 0 44px;
+      font-size: var(--fs-title);
       font-weight: 700;
       line-height: 0.98;
       letter-spacing: -0.02em;
@@ -129,22 +139,22 @@
       display: grid;
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: 20px;
-      padding: 14px 0 28px;
+      padding: 12px 0 22px;
       border-top: 1px solid var(--s-text);
       margin: 0;
     }
-    body.swiss .contact:first-of-type { border-top: 4px solid var(--s-text); }
+    body.swiss .contact:first-of-type { border-top: 3px solid var(--s-text); }
     body.swiss .contact .label {
       grid-column: 1 / 4;
       margin: 0;
-      font-size: 11px;
+      font-size: var(--fs-small);
       color: var(--s-dim);
     }
     body.swiss .contact .label::before {
       content: "";
       display: block;
-      width: 24px;
-      height: 24px;
+      width: 16px;
+      height: 16px;
       margin-bottom: 12px;
       background: var(--mark, var(--s-peacock));
     }
@@ -154,7 +164,7 @@
     body.swiss .contact .value {
       grid-column: 4 / 11;
       margin: 0;
-      font-size: clamp(15px, 1.5vw, 20px);
+      font-size: var(--fs-body);
       line-height: 1.45;
     }
     body.swiss .contact .value b { font-weight: 700; }
@@ -176,7 +186,7 @@
     body.swiss footer .rule { border-top-width: 1px; }
     body.swiss footer p {
       margin: 10px 0 0;
-      font-size: 11px;
+      font-size: var(--fs-small);
       color: var(--s-dim);
     }
     body.swiss footer .left  { grid-column: 1 / 7; }
@@ -198,12 +208,11 @@
       body.swiss header,
       body.swiss .grid { padding-left: 20px; padding-right: 20px; }
       body.swiss header nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      body.swiss h1 { grid-column: 1 / -1; font-size: 34px; margin: 32px 0 40px; }
+      body.swiss h1 { grid-column: 1 / -1; font-size: var(--fs-title); margin: 32px 0 40px; }
       body.swiss .contact .label,
       body.swiss .contact .value { grid-column: 1 / -1; }
       body.swiss .contact .label { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
       body.swiss .contact .label::before { width: 14px; height: 14px; margin: 0; }
-      body.swiss .contact .value { font-size: 15px; }
       body.swiss footer .left,
       body.swiss footer .right { grid-column: 1 / -1; }
       body.swiss footer .right { text-align: left; margin-top: 2px; }

@@ -29,13 +29,23 @@
       --s-sienna:  var(--sienna, #a8401e);
       --s-violet:  var(--violet, #2d2752);
 
+      /* ===== TEXT SIZES — the same on every page =====
+         Change a value here to change it on this page; keep the
+         eight pages identical so the site stays consistent. */
+      --fs-title: clamp(24px, 2.9vw, 42px);  /* page title */
+      --fs-head:  clamp(19px, 2.1vw, 30px);  /* section heading: years, Alumni, theme numbers */
+      --fs-sub:   clamp(15px, 1.6vw, 22px);  /* small heading: square numbers, floors, room names */
+      --fs-quote: 10pt;                      /* quotes */
+      --fs-body:  9pt;                       /* main text */
+      --fs-small: 8pt;                       /* menu, dates, captions, footer */
+
       margin: 0;
       padding: 0;
       max-width: none;
       background: var(--s-bg);
       color: var(--s-text);
       font-family: "Courier Prime", "Courier New", monospace;
-      font-size: 11pt;
+      font-size: var(--fs-body);
       line-height: 1.4;
     }
 
@@ -65,7 +75,7 @@
     }
     body.swiss header .logo {
       grid-column: 1 / 4;
-      font-size: 11pt;
+      font-size: var(--fs-body);
       font-weight: 700;
       letter-spacing: 0.08em;
       color: var(--s-text);
@@ -81,7 +91,7 @@
     body.swiss header nav a {
       color: var(--s-text);
       text-decoration: none;
-      font-size: 11px;
+      font-size: var(--fs-small);
       line-height: 1.3;
       padding-top: 8px;
       border-top: 1px solid var(--s-text);
@@ -98,7 +108,7 @@
     body.swiss .rule {
       grid-column: 1 / -1;
       height: 0;
-      border-top: 4px solid var(--s-text);
+      border-top: 3px solid var(--s-text);
     }
 
     /* ---------- page title ---------- */
@@ -109,8 +119,8 @@
     }
     body.swiss h1 {
       grid-column: 1 / 7;
-      margin: 40px 0 64px;
-      font-size: clamp(34px, 4.1vw, 60px);
+      margin: 28px 0 44px;
+      font-size: var(--fs-title);
       font-weight: 700;
       line-height: 0.98;
       letter-spacing: -0.02em;
@@ -127,26 +137,26 @@
     body.swiss h1 { grid-column: 1 / 6; }
     body.swiss .quotebox {
       grid-column: 7 / 13;
-      margin: 46px 0 64px;
-      padding-left: 16px;
+      margin: 32px 0 44px;
+      padding-left: 14px;
       border-left: 4px solid var(--s-yellow);
     }
     body.swiss .quote {
       margin: 0 0 10px;
       font-style: italic;
-      font-size: 13pt;
+      font-size: var(--fs-quote);
       line-height: 1.35;
     }
     body.swiss .quote-source {
       margin: 0;
-      font-size: 11px;
+      font-size: var(--fs-small);
       color: var(--s-dim);
     }
     body.swiss .quote-source a { color: var(--s-text); text-decoration: underline; }
 
     /* ---------- the four area squares ---------- */
     body.swiss .areas {
-      grid-column: 1 / -1;
+      grid-column: 1 / 9;
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       column-gap: 20px;
@@ -162,7 +172,7 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 14px 14px 26px;
+      padding: 10px 10px 20px;
       border: 1px solid var(--s-text);
       border-radius: 0;
       background: var(--s-bg);
@@ -185,14 +195,14 @@
       transition: height 0.25s;
     }
     body.swiss .area:hover::after,
-    body.swiss .area:focus-visible::after { height: 6px; }
-    body.swiss .area.selected::after { height: 12px; }
+    body.swiss .area:focus-visible::after { height: 4px; }
+    body.swiss .area.selected::after { height: 8px; }
     body.swiss .area:hover,
     body.swiss .area:focus-visible,
     body.swiss .area.selected { box-shadow: none; }
     body.swiss .area.selected { border-width: 1px; }
     body.swiss .area .num {
-      font-size: clamp(22px, 2.4vw, 36px);
+      font-size: var(--fs-sub);
       font-weight: 700;
       line-height: 1;
     }
@@ -212,7 +222,7 @@
     body.swiss .area.selected .pic img { filter: none; }
     body.swiss .pic:empty { border: 1px dashed #bbb; }
     body.swiss .area .label {
-      font-size: 11pt;
+      font-size: var(--fs-body);
       font-weight: 700;
       line-height: 1.3;
       min-height: 2.6em;
@@ -223,8 +233,8 @@
     /* ---------- links to ORCID / Scholar ---------- */
     body.swiss .full {
       grid-column: 1 / -1;
-      margin: 14px 0 72px;
-      font-size: 11px;
+      margin: 12px 0 52px;
+      font-size: var(--fs-small);
       color: var(--s-dim);
     }
     body.swiss .full a { color: var(--s-text); text-decoration: underline; }
@@ -236,7 +246,7 @@
       grid-template-columns: repeat(12, minmax(0, 1fr));
       column-gap: 20px;
       padding-top: 14px;
-      border-top: 4px solid var(--s-text);
+      border-top: 3px solid var(--s-text);
       margin-bottom: 56px;
     }
     /* left column: name of the selected area */
@@ -249,14 +259,15 @@
     body.swiss .current::before {
       content: "";
       display: block;
-      width: 24px;
-      height: 24px;
+      width: 16px;
+      height: 16px;
       margin-bottom: 14px;
       background: var(--tint, var(--s-line));
     }
     body.swiss .papers-right { grid-column: 4 / 13; }
     body.swiss .hint { margin: 0; color: var(--s-dim); }
     body.swiss #pub-list { list-style: none; margin: 0; padding: 0; }
+    body.swiss #pub-list li { max-width: 100ch; }
     body.swiss #pub-list li { display: none; }
     body.swiss #pub-list li.show {
       display: block;
@@ -277,7 +288,7 @@
     body.swiss footer .rule { border-top-width: 1px; }
     body.swiss footer p {
       margin: 10px 0 0;
-      font-size: 11px;
+      font-size: var(--fs-small);
       color: var(--s-dim);
     }
     body.swiss footer .left  { grid-column: 1 / 7; }
@@ -292,7 +303,7 @@
       }
       body.swiss h1 { grid-column: 1 / -1; margin-bottom: 24px; }
       body.swiss .quotebox { grid-column: 1 / 11; margin-top: 0; margin-bottom: 48px; }
-      body.swiss .areas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      body.swiss .areas { grid-column: 1 / -1; grid-template-columns: repeat(4, minmax(0, 1fr)); }
       body.swiss .current { grid-column: 1 / -1; margin-bottom: 20px; }
       body.swiss .papers-right { grid-column: 1 / -1; }
     }
@@ -302,10 +313,9 @@
       body.swiss header,
       body.swiss .grid { padding-left: 20px; padding-right: 20px; }
       body.swiss header nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      body.swiss h1 { font-size: 34px; margin: 32px 0 24px; }
+      body.swiss h1 { font-size: var(--fs-title); margin: 32px 0 24px; }
       body.swiss .quotebox { grid-column: 1 / -1; }
-      body.swiss .quote { font-size: 11pt; }
-      body.swiss .areas { grid-template-columns: 1fr; row-gap: 10px; }
+      body.swiss .areas { grid-column: 1 / -1; grid-template-columns: 1fr; row-gap: 10px; }
       body.swiss .area { aspect-ratio: auto; flex-direction: row; justify-content: flex-start; align-items: center; gap: 14px; }
       body.swiss .area .label { min-height: 0; }
       body.swiss .pic { width: 44px; height: 44px; flex: none; margin: 0; order: -1; }

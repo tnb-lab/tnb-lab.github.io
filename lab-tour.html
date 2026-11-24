@@ -141,13 +141,23 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
       --s-sienna:  var(--sienna, #a8401e);
       --s-violet:  var(--violet, #2d2752);
 
+      /* ===== TEXT SIZES — the same on every page =====
+         Change a value here to change it on this page; keep the
+         eight pages identical so the site stays consistent. */
+      --fs-title: clamp(24px, 2.9vw, 42px);  /* page title */
+      --fs-head:  clamp(19px, 2.1vw, 30px);  /* section heading: years, Alumni, theme numbers */
+      --fs-sub:   clamp(15px, 1.6vw, 22px);  /* small heading: square numbers, floors, room names */
+      --fs-quote: 10pt;                      /* quotes */
+      --fs-body:  9pt;                       /* main text */
+      --fs-small: 8pt;                       /* menu, dates, captions, footer */
+
       margin: 0;
       padding: 0;
       max-width: none;
       background: var(--s-bg);
       color: var(--s-text);
       font-family: "Courier Prime", "Courier New", monospace;
-      font-size: 11pt;
+      font-size: var(--fs-body);
       line-height: 1.4;
     }
 
@@ -177,7 +187,7 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
     }
     body.swiss header .logo {
       grid-column: 1 / 4;
-      font-size: 11pt;
+      font-size: var(--fs-body);
       font-weight: 700;
       letter-spacing: 0.08em;
       color: var(--s-text);
@@ -193,7 +203,7 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
     body.swiss header nav a {
       color: var(--s-text);
       text-decoration: none;
-      font-size: 11px;
+      font-size: var(--fs-small);
       line-height: 1.3;
       padding-top: 8px;
       border-top: 1px solid var(--s-text);
@@ -210,7 +220,7 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
     body.swiss .rule {
       grid-column: 1 / -1;
       height: 0;
-      border-top: 4px solid var(--s-text);
+      border-top: 3px solid var(--s-text);
     }
 
     /* ---------- page title ---------- */
@@ -221,8 +231,8 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
     }
     body.swiss h1 {
       grid-column: 1 / 7;
-      margin: 40px 0 64px;
-      font-size: clamp(34px, 4.1vw, 60px);
+      margin: 28px 0 44px;
+      font-size: var(--fs-title);
       font-weight: 700;
       line-height: 0.98;
       letter-spacing: -0.02em;
@@ -243,7 +253,7 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
     body.swiss footer .rule { border-top-width: 1px; }
     body.swiss footer p {
       margin: 10px 0 0;
-      font-size: 11px;
+      font-size: var(--fs-small);
       color: var(--s-dim);
     }
     body.swiss footer .left  { grid-column: 1 / 7; }
@@ -255,12 +265,12 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
     body.swiss main.labtour h1 { grid-column: 1 / 7; }
     body.swiss .intro {
       grid-column: 7 / 13;
-      margin: 46px 0 56px;
-      padding-left: 16px;
+      margin: 32px 0 40px;
+      padding-left: 14px;
       border-left: 4px solid var(--s-yellow);
     }
     body.swiss .intro .lede { margin: 0 0 8px; max-width: none; }
-    body.swiss .intro .dim { margin: 0; font-size: 11px; color: var(--s-dim); }
+    body.swiss .intro .dim { margin: 0; font-size: var(--fs-small); color: var(--s-dim); }
 
     /* ---------- floor switcher: one column per floor, rule on top ---------- */
     body.swiss .floors {
@@ -281,8 +291,8 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
     }
     body.swiss .floors button:hover { border-top: 3px solid var(--s-violet); padding-top: 8px; background: none; }
     body.swiss .floors button[aria-pressed="true"] { border-top: 3px solid var(--s-peacock); padding-top: 8px; background: none; }
-    body.swiss .floors .lv { font-size: clamp(18px, 1.8vw, 26px); line-height: 1.1; }
-    body.swiss .floors .sub { font-size: 11px; margin-top: 4px; }
+    body.swiss .floors .lv { font-size: var(--fs-sub); line-height: 1.1; }
+    body.swiss .floors .sub { font-size: var(--fs-small); margin-top: 4px; }
     body.swiss .stack { margin-top: 6px; }
 
     /* ---------- plan + card ---------- */
@@ -292,14 +302,14 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
       column-gap: 20px;
       row-gap: 32px;
       padding-top: 14px;
-      border-top: 4px solid var(--s-text);
+      border-top: 3px solid var(--s-text);
       margin-bottom: 56px;
     }
-    body.swiss .tour .plan { grid-column: 1 / 9; }
+    body.swiss .tour .plan { grid-column: 1 / 8; }
     body.swiss .tour .card { grid-column: 9 / 13; }
     body.swiss .plan-box { border: 1px solid var(--s-text); }
-    body.swiss .legend { font-size: 11px; }
-    body.swiss .keys { gap: 0; margin-top: 20px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); column-gap: 20px; }
+    body.swiss .legend { font-size: var(--fs-small); }
+    body.swiss .keys { gap: 0; margin-top: 20px; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); column-gap: 20px; }
     body.swiss .keys button {
       border: 0;
       border-top: 1px solid var(--s-text);
@@ -311,11 +321,17 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
 
     /* room card */
     body.swiss .card { border-top: 0; padding-top: 0; }
-    body.swiss .card .tag { font-size: 11px; }
+    body.swiss .card .tag { font-size: var(--fs-small); }
+    body.swiss .keys button { font-size: var(--fs-body); }
+    body.swiss .keys button small,
+    body.swiss .pill { font-size: var(--fs-small); }
+    body.swiss .noplan .big { font-size: var(--fs-head); }
+    body.swiss .noplan p { font-size: var(--fs-body); }
+    body.swiss .eq { font-size: var(--fs-body); }
     body.swiss .card p { margin: 0; max-width: 42ch; line-height: 1.5; }
     body.swiss .card h2 {
       margin: 6px 0 14px;
-      font-size: clamp(22px, 2vw, 30px);
+      font-size: var(--fs-sub);
       line-height: 1.1;
       letter-spacing: -0.01em;
       text-transform: none;
@@ -323,16 +339,16 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
     body.swiss .card h2::before {
       content: "";
       display: block;
-      width: 24px;
-      height: 24px;
+      width: 16px;
+      height: 16px;
       margin-bottom: 14px;
       background: var(--lt-active);
     }
-    body.swiss .card h3 { font-size: 11px; color: var(--s-text); font-weight: 700; margin: 26px 0 8px; }
+    body.swiss .card h3 { font-size: var(--fs-small); color: var(--s-text); font-weight: 700; margin: 26px 0 8px; }
     body.swiss .eq { border-top: 1px solid var(--s-text); }
     body.swiss .eq li { border-bottom: 1px solid var(--s-line); }
     body.swiss .pill { vertical-align: 4px; }
-    body.swiss .nav2 button { border: 0; border-top: 1px solid var(--s-text); padding: 8px 0 0; font-size: 11px; text-align: left; }
+    body.swiss .nav2 button { border: 0; border-top: 1px solid var(--s-text); padding: 8px 0 0; font-size: var(--fs-small); text-align: left; }
     body.swiss .nav2 button:last-child { text-align: right; }
     body.swiss .nav2 button:hover { border-top: 3px solid var(--s-peacock); padding-top: 6px; }
     body.swiss .noplan { border: 1px dashed var(--s-text); }
@@ -356,7 +372,7 @@ svg.plan-svg{display:block;width:100%;min-width:620px;height:auto}
       body.swiss header,
       body.swiss .grid { padding-left: 20px; padding-right: 20px; }
       body.swiss header nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      body.swiss main.labtour h1 { font-size: 34px; margin: 32px 0 24px; }
+      body.swiss main.labtour h1 { font-size: var(--fs-title); margin: 32px 0 24px; }
       body.swiss .intro { grid-column: 1 / -1; }
       body.swiss .floors { grid-template-columns: 1fr; gap: 12px; }
       body.swiss footer .left,
